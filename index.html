@@ -104,7 +104,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 24px;
-            padding-bottom: 60px;
+            padding-bottom: 40px;
         }
 
         /* 漂流瓶卡片 (玻璃拟态) */
@@ -235,7 +235,7 @@
             overflow-y: auto;
         }
 
-        /* 飞书评论区样式 */
+        /* 模拟评论区（弹窗内） */
         .comment-section {
             border-top: 1px solid var(--glass-border);
             padding-top: 20px;
@@ -293,6 +293,22 @@
         }
         .form-group textarea { resize: vertical; min-height: 100px; }
 
+        /* Utterances 评论区容器样式 */
+        .utterances-container {
+            max-width: 800px;
+            margin: 40px auto 80px; 
+            padding: 30px; 
+            background: var(--glass-bg); 
+            border-radius: 16px; 
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(12px);
+        }
+        .utterances-title {
+            text-align: center; 
+            color: white; 
+            margin-bottom: 24px; 
+            font-size: 20px;
+        }
     </style>
 </head>
 <body>
@@ -317,7 +333,21 @@
         </div>
     </div>
 
-    <!-- 详情与评论弹窗 -->
+    <!-- 全局公开评论区 (Utterances) -->
+    <div class="utterances-container">
+        <h3 class="utterances-title">💬 学术诚信全局讨论区</h3>
+        <p style="text-align: center; color: var(--text-sub); font-size: 13px; margin-bottom: 20px;">💡 提示：此留言板为公开共享，需使用 GitHub 账号授权登录。</p>
+        
+        <script src="https://utteranc.es/client.js"
+                repo="aflzm/Bottle"
+                issue-term="pathname"
+                theme="github-dark" 
+                crossorigin="anonymous"
+                async>
+        </script>
+    </div>
+
+    <!-- 详情与模拟评论弹窗（基于本地数据） -->
     <div class="modal-overlay" id="detailModal">
         <div class="modal">
             <button class="modal-close" onclick="closeDetailModal()">&times;</button>
@@ -329,12 +359,12 @@
             </div>
             
             <div class="comment-section">
-                <div class="comment-title">💬 飞书评论区互助</div>
+                <div class="comment-title">💬 快闪讨论（当前浏览器模拟）</div>
                 <div class="comment-list" id="commentList">
                     <!-- 动态填充评论 -->
                 </div>
                 <div class="comment-input-area">
-                    <input type="text" id="commentInput" placeholder="以匿名身份留下你的建议或探讨..." onkeypress="handleCommentEnter(event)">
+                    <input type="text" id="commentInput" placeholder="在此输入你的看法..." onkeypress="handleCommentEnter(event)">
                     <button class="btn-send" onclick="addComment()">发送</button>
                 </div>
             </div>
@@ -451,7 +481,7 @@
             document.getElementById('detailModal').classList.add('active');
         }
 
-        // 渲染评论
+        // 渲染模拟评论
         function renderComments(comments) {
             const list = document.getElementById('commentList');
             list.innerHTML = '';
@@ -474,7 +504,7 @@
             list.scrollTop = list.scrollHeight;
         }
 
-        // 添加评论
+        // 添加模拟评论
         function addComment() {
             const input = document.getElementById('commentInput');
             const text = input.value.trim();
