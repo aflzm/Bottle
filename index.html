@@ -127,13 +127,11 @@
 
         // 页面加载时拉取数据
         async function loadBottles() {
-            // 1. 拉取云端新增的漂流瓶
-            const { data: bottlesData, error: bError } = await db.from('bottles').select('*').order('id', { ascending: false });
+            // 🌟 重点修改：这里改成了 ascending: true（升序，后面加的排在后面）
+            const { data: bottlesData, error: bError } = await db.from('bottles').select('*').order('id', { ascending: true });
             
-            // 2. 拉取所有评论的数量（用于展示 X条讨论）
             const { data: commentsData, error: cError } = await db.from('comments').select('bottle_id');
             
-            // 统计每个瓶子的评论数
             const commentCounts = {};
             if (commentsData) {
                 commentsData.forEach(c => {
@@ -141,7 +139,6 @@
                 });
             }
 
-            // 合并数据：写死的 + 云端的
             let allBottles = [...fixedBottles];
             if (bottlesData && bottlesData.length > 0) {
                 allBottles = allBottles.concat(bottlesData);
@@ -201,7 +198,7 @@
                         </div>
                     `;
                 });
-                list.scrollTop = list.scrollHeight; // 自动滚到底部
+                list.scrollTop = list.scrollHeight;
             } else {
                 list.innerHTML = '<div style="text-align: center; color: #8F9BB3; font-size: 13px; margin-top: 20px;">还没有讨论，快来抢沙发！</div>';
             }
@@ -228,8 +225,8 @@
                 alert("发送失败，请重试");
             } else {
                 document.getElementById('commentContent').value = '';
-                await loadComments(); // 刷新弹窗内的讨论
-                loadBottles(); // 刷新主页面的评论数字
+                await loadComments();
+                loadBottles();
             }
 
             btn.innerText = "发送讨论";
@@ -261,14 +258,13 @@
                 document.getElementById('postNickname').value = '';
                 document.getElementById('postContent').value = '';
                 document.getElementById('postModal').classList.remove('active');
-                loadBottles(); // 投递成功后刷新列表
+                loadBottles();
             }
 
             btn.innerText = "抛入海中 🌊";
             btn.disabled = false;
         }
 
-        // 页面初始化
         loadBottles();
     </script>
 </body>
