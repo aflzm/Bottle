@@ -5,376 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>“求真·问道” 学术诚信飞书漂流瓶</title>
     <style>
-        :root {
-            --primary: #3370FF; /* 飞书蓝 */
-            --primary-hover: #1F55E6;
-            --bg-deep: #0B1528;
-            --bg-light: #16284B;
-            --text-main: #F2F5FA;
-            --text-sub: #8F9BB3;
-            --glass-bg: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.15);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, var(--bg-deep), var(--bg-light));
-            color: var(--text-main);
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* 动态背景气泡 */
-        .bubble {
-            position: absolute;
-            background: radial-gradient(circle, rgba(51, 112, 255, 0.2) 0%, rgba(51, 112, 255, 0) 70%);
-            border-radius: 50%;
-            animation: float 10s infinite ease-in-out;
-            z-index: -1;
-        }
-        @keyframes float {
-            0% { transform: translateY(0) scale(1); opacity: 0.5; }
-            50% { transform: translateY(-50px) scale(1.1); opacity: 0.8; }
-            100% { transform: translateY(0) scale(1); opacity: 0.5; }
-        }
-
-        /* 顶部导航与标题 */
-        header {
-            text-align: center;
-            padding: 50px 20px 30px;
-            background: linear-gradient(to bottom, rgba(11, 21, 40, 0.9), transparent);
-        }
-        .badge {
-            display: inline-block;
-            background: rgba(51, 112, 255, 0.2);
-            color: #79A1FF;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 14px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(51, 112, 255, 0.3);
-        }
-        h1 {
-            font-size: 36px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            margin-bottom: 12px;
-            background: linear-gradient(90deg, #FFF, #79A1FF);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .subtitle {
-            color: var(--text-sub);
-            font-size: 16px;
-            margin-bottom: 30px;
-        }
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(51, 112, 255, 0.4);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .btn-primary:hover {
-            background: var(--primary-hover);
-            transform: translateY(-2px);
-        }
-
-        /* 主广场网格 */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 24px;
-            padding-bottom: 40px;
-        }
-
-        /* 漂流瓶卡片 (玻璃拟态) */
-        .card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 24px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            border-color: rgba(51, 112, 255, 0.5);
-        }
+        :root { --primary: #3370FF; --bg-deep: #0B1528; --bg-light: #16284B; --text-main: #F2F5FA; --text-sub: #8F9BB3; --glass-bg: rgba(255, 255, 255, 0.08); --glass-border: rgba(255, 255, 255, 0.15); }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        body { background: linear-gradient(135deg, var(--bg-deep), var(--bg-light)); color: var(--text-main); min-height: 100vh; }
         
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-        .card-user {
-            font-weight: 600;
-            font-size: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .avatar {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: #2B3A5C;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-        }
-        .tag {
-            font-size: 12px;
-            padding: 4px 10px;
-            border-radius: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #C5D1E8;
-        }
-        .tag.red { background: rgba(245, 63, 63, 0.15); color: #F53F3F; border: 1px solid rgba(245, 63, 63, 0.3);}
-        .tag.blue { background: rgba(51, 112, 255, 0.15); color: #79A1FF; border: 1px solid rgba(51, 112, 255, 0.3);}
-        .tag.green { background: rgba(0, 180, 42, 0.15); color: #00B42A; border: 1px solid rgba(0, 180, 42, 0.3);}
-
-        .card-content {
-            font-size: 15px;
-            line-height: 1.6;
-            color: #D1D9E6;
-            margin-bottom: 20px;
-            flex-grow: 1;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        .card-footer {
-            display: flex;
-            gap: 16px;
-            color: var(--text-sub);
-            font-size: 13px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            padding-top: 16px;
-        }
-        .card-footer span { display: flex; align-items: center; gap: 4px; }
-
-        /* 弹窗 (Modal) */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        .modal-overlay.active {
-            display: flex;
-            opacity: 1;
-        }
-        .modal {
-            background: #1C2A46;
-            width: 90%;
-            max-width: 600px;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            border: 1px solid var(--glass-border);
-            transform: scale(0.95);
-            transition: transform 0.3s;
-            max-height: 85vh;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-        .modal-overlay.active .modal { transform: scale(1); }
+        header { text-align: center; padding: 50px 20px 30px; }
+        .badge { display: inline-block; background: rgba(51, 112, 255, 0.2); color: #79A1FF; padding: 6px 16px; border-radius: 20px; font-size: 14px; margin-bottom: 20px; border: 1px solid rgba(51, 112, 255, 0.3); }
+        h1 { font-size: 36px; font-weight: 700; margin-bottom: 12px; color: #fff; }
+        .subtitle { color: var(--text-sub); font-size: 16px; margin-bottom: 30px; }
+        .btn-primary { background: var(--primary); color: white; border: none; padding: 12px 30px; border-radius: 8px; font-size: 16px; cursor: pointer; transition: 0.3s; }
+        .btn-primary:hover { background: #1F55E6; transform: translateY(-2px); }
         
-        .modal-close {
-            position: absolute;
-            top: 20px; right: 20px;
-            background: none; border: none;
-            color: var(--text-sub);
-            font-size: 24px; cursor: pointer;
-        }
-        .modal-close:hover { color: white; }
-
-        .modal-header { margin-bottom: 20px; }
-        .modal-content {
-            font-size: 16px;
-            line-height: 1.8;
-            color: #E2E8F0;
-            margin-bottom: 30px;
-            overflow-y: auto;
-        }
-
-        /* 模拟评论区（弹窗内） */
-        .comment-section {
-            border-top: 1px solid var(--glass-border);
-            padding-top: 20px;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            min-height: 200px;
-        }
-        .comment-title {
-            font-weight: 600;
-            margin-bottom: 16px;
-            font-size: 15px;
-        }
-        .comment-list {
-            overflow-y: auto;
-            flex-grow: 1;
-            margin-bottom: 16px;
-            max-height: 150px;
-        }
-        .comment-item {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-        .comment-item .avatar { width: 32px; height: 32px; background: #3370FF; color: white;}
-        .comment-body { flex-grow: 1; }
-        .comment-user { font-size: 13px; color: var(--text-sub); margin-bottom: 4px; display: flex; justify-content: space-between;}
-        .comment-text { font-size: 14px; color: #E2E8F0; line-height: 1.5; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;}
-
-        .comment-input-area {
-            display: flex;
-            gap: 12px;
-            margin-top: auto;
-        }
-        .comment-input-area input {
-            flex-grow: 1;
-            background: rgba(0,0,0,0.2);
-            border: 1px solid var(--glass-border);
-            border-radius: 8px;
-            padding: 10px 16px;
-            color: white;
-            outline: none;
-        }
-        .comment-input-area input:focus { border-color: var(--primary); }
-        .btn-send {
-            background: var(--primary); color: white; border: none; border-radius: 8px; padding: 0 20px; cursor: pointer;
-        }
-        .btn-send:hover { background: var(--primary-hover); }
-
-        /* 投递表单弹窗 */
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; padding-bottom: 40px; }
+        
+        .card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; backdrop-filter: blur(12px); }
+        .card-header { display: flex; justify-content: space-between; margin-bottom: 16px; }
+        .card-user { font-weight: 600; font-size: 15px; }
+        .tag { font-size: 12px; padding: 4px 10px; border-radius: 6px; }
+        .tag.red { color: #F53F3F; border: 1px solid #F53F3F; background: rgba(245, 63, 63, 0.1); }
+        .tag.blue { color: #79A1FF; border: 1px solid #79A1FF; background: rgba(51, 112, 255, 0.1); }
+        .tag.green { color: #00B42A; border: 1px solid #00B42A; background: rgba(0, 180, 42, 0.1); }
+        .card-content { font-size: 15px; color: #D1D9E6; flex-grow: 1; line-height: 1.6; margin-bottom: 16px; }
+        .card-footer { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 16px; color: var(--text-sub); font-size: 13px; }
+        
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 100; }
+        .modal-overlay.active { display: flex; }
+        .modal { background: #1C2A46; width: 90%; max-width: 500px; border-radius: 20px; padding: 30px; position: relative; border: 1px solid var(--glass-border); }
+        .modal-close { position: absolute; top: 20px; right: 20px; background: none; border: none; color: var(--text-sub); font-size: 24px; cursor: pointer; }
+        
         .form-group { margin-bottom: 16px; }
         .form-group label { display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-sub); }
-        .form-group select, .form-group textarea, .form-group input {
-            width: 100%; padding: 12px; border-radius: 8px; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); color: white; outline: none;
-        }
+        .form-group select, .form-group textarea, .form-group input { width: 100%; padding: 12px; border-radius: 8px; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); color: white; outline: none; }
         .form-group textarea { resize: vertical; min-height: 100px; }
-
-        /* Utterances 评论区容器样式 */
-        .utterances-container {
-            max-width: 800px;
-            margin: 40px auto 80px; 
-            padding: 30px; 
-            background: var(--glass-bg); 
-            border-radius: 16px; 
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(12px);
-        }
-        .utterances-title {
-            text-align: center; 
-            color: white; 
-            margin-bottom: 24px; 
-            font-size: 20px;
-        }
     </style>
+    <!-- 引入云端数据库的插件 -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-
-    <!-- 背景气泡装饰 -->
-    <div class="bubble" style="width: 200px; height: 200px; top: 10%; left: 5%; animation-delay: 0s;"></div>
-    <div class="bubble" style="width: 300px; height: 300px; top: 40%; right: 10%; animation-delay: 2s;"></div>
-    <div class="bubble" style="width: 150px; height: 150px; top: 70%; left: 20%; animation-delay: 4s;"></div>
 
     <header>
         <div class="badge">福州大学2026年研究生科学道德与学风建设月</div>
         <h1>“求真·问道” 学术诚信漂流瓶</h1>
         <p class="subtitle">保护隐私 · 破冰交流 · 探讨学术规范与导学关系</p>
-        <button class="btn-primary" onclick="openPostModal()">
+        <button class="btn-primary" onclick="document.getElementById('postModal').classList.add('active')">
             <span>🌊 投递你的漂流瓶</span>
         </button>
     </header>
 
     <div class="container">
         <div class="grid" id="bottleGrid">
-            <!-- 卡片由JS动态渲染 -->
-        </div>
-    </div>
-
-    <!-- 全局公开评论区 (Utterances) -->
-    <div class="utterances-container">
-        <h3 class="utterances-title">💬 学术诚信全局讨论区</h3>
-        <p style="text-align: center; color: var(--text-sub); font-size: 13px; margin-bottom: 20px;">💡 提示：此留言板为公开共享，需使用 GitHub 账号授权登录。</p>
-        
-        <script src="https://utteranc.es/client.js"
-                repo="aflzm/Bottle"
-                issue-term="pathname"
-                theme="github-dark" 
-                crossorigin="anonymous"
-                async>
-        </script>
-    </div>
-
-    <!-- 详情与模拟评论弹窗（基于本地数据） -->
-    <div class="modal-overlay" id="detailModal">
-        <div class="modal">
-            <button class="modal-close" onclick="closeDetailModal()">&times;</button>
-            <div class="modal-header" id="modalHeader">
-                <!-- 动态填充 -->
-            </div>
-            <div class="modal-content" id="modalContent">
-                <!-- 动态填充 -->
-            </div>
-            
-            <div class="comment-section">
-                <div class="comment-title">💬 快闪讨论（当前浏览器模拟）</div>
-                <div class="comment-list" id="commentList">
-                    <!-- 动态填充评论 -->
-                </div>
-                <div class="comment-input-area">
-                    <input type="text" id="commentInput" placeholder="在此输入你的看法..." onkeypress="handleCommentEnter(event)">
-                    <button class="btn-send" onclick="addComment()">发送</button>
-                </div>
-            </div>
+            <!-- 这里会自动生成所有人投递的卡片 -->
         </div>
     </div>
 
     <!-- 投递表单弹窗 -->
     <div class="modal-overlay" id="postModal">
         <div class="modal">
-            <button class="modal-close" onclick="closePostModal()">&times;</button>
+            <button class="modal-close" onclick="document.getElementById('postModal').classList.remove('active')">&times;</button>
             <h2 style="margin-bottom: 20px; font-size: 20px;">投递漂流瓶</h2>
             <div class="form-group">
                 <label>漂流瓶类型</label>
@@ -392,191 +80,79 @@
                 <label>内容（内容绝对匿名）</label>
                 <textarea id="postContent" placeholder="写下你的困惑、探讨或是微故事..."></textarea>
             </div>
-            <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="submitPost()">抛入海中 🌊</button>
+            <button class="btn-primary" style="width: 100%;" onclick="submitPost()" id="submitBtn">抛入海中 🌊</button>
         </div>
     </div>
 
     <script>
-        // 模拟初始数据
-        let bottles = [
-            {
-                id: 1,
-                user: "匿名科研狗",
-                type: "red",
-                typeName: "⚠️ 学术红线探讨",
-                content: "求助大家，如果我在写论文时，引用了网络上的图表，但我自己重新画了一遍并且修改了部分数据，这算不算学术不端？导师最近强调了这个问题，我很慌。",
-                comments: [
-                    { user: "学术部小李", text: "算的。重新画图但篡改数据属于伪造/篡改，引用必须标明出处且保持数据真实性。" },
-                    { user: "法学院大佬", text: "不仅是学术不端，可能还会涉及版权问题，建议直接引用原图并规范标注。" }
-                ]
-            },
-            {
-                id: 2,
-                user: "迷茫的研一",
-                type: "green",
-                typeName: "📖 导学关系树洞",
-                content: "导师总是让我做很多报销和跑腿的杂活，感觉自己像个行政秘书，科研进度很慢。不知道怎么开口跟导师沟通...",
-                comments: [
-                    { user: "过来人", text: "建议找个导师心情好的时间，拿着你的科研计划表去汇报，委婉表示最近杂活多导致进度滞后。" }
-                ]
-            },
-            {
-                id: 3,
-                user: "实验小白",
-                type: "blue",
-                typeName: "🔍 科研困惑求助",
-                content: "实验数据跑不出来，已经重复了半个月了，跟导师汇报他总觉得我不够努力。大家遇到实验瓶颈期都是怎么熬过来的？",
-                comments: []
-            }
-        ];
+        // 👇 已经把刚刚获取的 URL 和 Key 填进去了
+        const SUPABASE_URL = 'https://usugfffkqdhmwvcvjmrf.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_A0EEq3mPFe1QsOP7nog2Iw_lOAJWWmU';
 
-        let currentBottleId = null;
+        // 初始化连接
+        const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // 渲染卡片
-        function renderBottles() {
+        // 从云端拉取所有人投递的漂流瓶
+        async function loadBottles() {
+            const { data, error } = await db.from('bottles').select('*').order('id', { ascending: false });
+            if (error) { console.error('获取失败:', error); return; }
+            
             const grid = document.getElementById('bottleGrid');
             grid.innerHTML = '';
             
-            bottles.forEach(bottle => {
+            if(data.length === 0) {
+                grid.innerHTML = '<div style="color: #8F9BB3; text-align: center; width: 100%; grid-column: 1 / -1; padding: 40px;">还没有漂流瓶，快来投递第一个吧！</div>';
+                return;
+            }
+
+            data.forEach(bottle => {
                 const card = document.createElement('div');
                 card.className = 'card';
-                card.onclick = () => openDetailModal(bottle.id);
+                let tagName = bottle.type === 'red' ? '⚠️ 学术红线探讨' : (bottle.type === 'blue' ? '🔍 科研困惑求助' : '📖 导学关系树洞');
                 
                 card.innerHTML = `
                     <div class="card-header">
-                        <div class="card-user">
-                            <div class="avatar">👤</div>
-                            ${bottle.user}
-                        </div>
-                        <div class="tag ${bottle.type}">${bottle.typeName}</div>
+                        <div class="card-user">👤 ${bottle.nickname}</div>
+                        <div class="tag ${bottle.type}">${tagName}</div>
                     </div>
                     <div class="card-content">${bottle.content}</div>
-                    <div class="card-footer">
-                        <span>💬 ${bottle.comments.length} 条讨论</span>
-                        <span>💙 捞取讨论</span>
-                    </div>
+                    <div class="card-footer">🌊 刚刚打捞</div>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        // 打开详情弹窗
-        function openDetailModal(id) {
-            const bottle = bottles.find(b => b.id === id);
-            if (!bottle) return;
-            
-            currentBottleId = id;
-            
-            document.getElementById('modalHeader').innerHTML = `
-                <div class="card-user" style="margin-bottom: 10px;">
-                    <div class="avatar" style="background: var(--primary);">👤</div>
-                    <span style="font-size: 18px;">${bottle.user}</span>
-                </div>
-                <div class="tag ${bottle.type}">${bottle.typeName}</div>
-            `;
-            
-            document.getElementById('modalContent').innerHTML = bottle.content;
-            renderComments(bottle.comments);
-            
-            document.getElementById('detailModal').classList.add('active');
-        }
-
-        // 渲染模拟评论
-        function renderComments(comments) {
-            const list = document.getElementById('commentList');
-            list.innerHTML = '';
-            if (comments.length === 0) {
-                list.innerHTML = '<div style="color: #8F9BB3; font-size: 13px; text-align: center; padding: 20px;">还没有人评论，快来帮帮TA吧～</div>';
-                return;
-            }
-            comments.forEach(c => {
-                const item = document.createElement('div');
-                item.className = 'comment-item';
-                item.innerHTML = `
-                    <div class="avatar">💬</div>
-                    <div class="comment-body">
-                        <div class="comment-user"><span>${c.user}</span> <span>刚刚</span></div>
-                        <div class="comment-text">${c.text}</div>
-                    </div>
-                `;
-                list.appendChild(item);
-            });
-            list.scrollTop = list.scrollHeight;
-        }
-
-        // 添加模拟评论
-        function addComment() {
-            const input = document.getElementById('commentInput');
-            const text = input.value.trim();
-            if (!text) return;
-            
-            const bottle = bottles.find(b => b.id === currentBottleId);
-            if (bottle) {
-                bottle.comments.push({ user: "热心捞瓶人", text: text });
-                renderComments(bottle.comments);
-                input.value = '';
-                renderBottles(); // 更新主页面的评论数
-            }
-        }
-
-        function handleCommentEnter(e) {
-            if (e.key === 'Enter') addComment();
-        }
-
-        function closeDetailModal() {
-            document.getElementById('detailModal').classList.remove('active');
-        }
-
-        // 投递相关
-        function openPostModal() {
-            document.getElementById('postModal').classList.add('active');
-        }
-
-        function closePostModal() {
-            document.getElementById('postModal').classList.remove('active');
-        }
-
-        function submitPost() {
-            const typeSelect = document.getElementById('postType');
-            const type = typeSelect.value;
-            const typeName = typeSelect.options[typeSelect.selectedIndex].text;
-            let user = document.getElementById('postNickname').value.trim();
+        // 投递新瓶子到云端
+        async function submitPost() {
+            const nickname = document.getElementById('postNickname').value.trim() || "匿名用户";
             const content = document.getElementById('postContent').value.trim();
+            const type = document.getElementById('postType').value;
+            const btn = document.getElementById('submitBtn');
 
-            if (!content) {
-                alert("请填写漂流瓶内容哦~");
-                return;
+            if (!content) { alert("请填写漂流瓶内容！"); return; }
+
+            btn.innerText = "正在抛入海中...";
+            btn.disabled = true;
+
+            // 把数据写进云端数据库（字段名改为 nickname）
+            const { error } = await db.from('bottles').insert([{ nickname: nickname, content: content, type: type }]);
+
+            if (error) {
+                alert("网络波动，投递失败，请重试");
+                console.error(error);
+            } else {
+                document.getElementById('postNickname').value = '';
+                document.getElementById('postContent').value = '';
+                document.getElementById('postModal').classList.remove('active');
+                loadBottles(); // 投递成功后，立刻刷新卡片
             }
-            if (!user) user = "匿名用户";
 
-            const newBottle = {
-                id: Date.now(),
-                user: user,
-                type: type,
-                typeName: typeName,
-                content: content,
-                comments: []
-            };
-
-            bottles.unshift(newBottle); // 放在最前面
-            renderBottles();
-            closePostModal();
-            
-            // 清空表单
-            document.getElementById('postNickname').value = '';
-            document.getElementById('postContent').value = '';
+            btn.innerText = "抛入海中 🌊";
+            btn.disabled = false;
         }
 
-        // 点击遮罩层关闭弹窗
-        document.getElementById('detailModal').addEventListener('click', function(e) {
-            if (e.target === this) closeDetailModal();
-        });
-        document.getElementById('postModal').addEventListener('click', function(e) {
-            if (e.target === this) closePostModal();
-        });
-
-        // 初始化
-        renderBottles();
+        // 页面刚打开时，加载一次数据
+        loadBottles();
     </script>
 </body>
 </html>
