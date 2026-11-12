@@ -19,27 +19,32 @@
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; padding-bottom: 40px; }
         
-        .card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; backdrop-filter: blur(12px); }
+        .card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; backdrop-filter: blur(12px); cursor: pointer; transition: 0.2s; }
+        .card:hover { transform: translateY(-4px); border-color: rgba(51, 112, 255, 0.5); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
         .card-header { display: flex; justify-content: space-between; margin-bottom: 16px; }
         .card-user { font-weight: 600; font-size: 15px; }
         .tag { font-size: 12px; padding: 4px 10px; border-radius: 6px; }
         .tag.red { color: #F53F3F; border: 1px solid #F53F3F; background: rgba(245, 63, 63, 0.1); }
         .tag.blue { color: #79A1FF; border: 1px solid #79A1FF; background: rgba(51, 112, 255, 0.1); }
         .tag.green { color: #00B42A; border: 1px solid #00B42A; background: rgba(0, 180, 42, 0.1); }
-        .card-content { font-size: 15px; color: #D1D9E6; flex-grow: 1; line-height: 1.6; margin-bottom: 16px; }
-        .card-footer { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 16px; color: var(--text-sub); font-size: 13px; }
+        .card-content { font-size: 15px; color: #D1D9E6; flex-grow: 1; line-height: 1.6; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .card-footer { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 16px; color: var(--text-sub); font-size: 13px; display: flex; gap: 16px; }
         
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 100; }
         .modal-overlay.active { display: flex; }
-        .modal { background: #1C2A46; width: 90%; max-width: 500px; border-radius: 20px; padding: 30px; position: relative; border: 1px solid var(--glass-border); }
+        .modal { background: #1C2A46; width: 90%; max-width: 500px; border-radius: 20px; padding: 30px; position: relative; border: 1px solid var(--glass-border); max-height: 85vh; display: flex; flex-direction: column; }
         .modal-close { position: absolute; top: 20px; right: 20px; background: none; border: none; color: var(--text-sub); font-size: 24px; cursor: pointer; }
         
         .form-group { margin-bottom: 16px; }
         .form-group label { display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-sub); }
         .form-group select, .form-group textarea, .form-group input { width: 100%; padding: 12px; border-radius: 8px; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); color: white; outline: none; }
         .form-group textarea { resize: vertical; min-height: 100px; }
+        
+        .comment-box { flex-grow: 1; overflow-y: auto; margin-bottom: 16px; max-height: 250px; padding-right: 8px;}
+        .comment-item { margin-bottom: 12px; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; }
+        .comment-user { color: #79A1FF; font-weight: bold; margin-bottom: 4px; }
+        .comment-text { color: #D1D9E6; line-height: 1.5; }
     </style>
-    <!-- 引入云端数据库的插件 -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
@@ -55,7 +60,7 @@
 
     <div class="container">
         <div class="grid" id="bottleGrid">
-            <!-- 这里会自动生成所有人投递的卡片 -->
+            <!-- 卡片将在这里生成 -->
         </div>
     </div>
 
@@ -74,7 +79,7 @@
             </div>
             <div class="form-group">
                 <label>你的昵称</label>
-                <input type="text" id="postNickname" placeholder="例如：匿名科研狗、迷茫的研一">
+                <input type="text" id="postNickname" placeholder="例如：匿名科研生、迷茫的研一">
             </div>
             <div class="form-group">
                 <label>内容（内容绝对匿名）</label>
@@ -84,30 +89,73 @@
         </div>
     </div>
 
+    <!-- 讨论弹窗 -->
+    <div class="modal-overlay" id="commentModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeCommentModal()">&times;</button>
+            <h2 style="margin-bottom: 16px; font-size: 20px;">讨论区</h2>
+            <div id="modalOriginalContent" style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; margin-bottom: 16px; font-size: 14px; color: #D1D9E6; font-style: italic;"></div>
+            
+            <div class="comment-box" id="commentList">
+                <!-- 评论列表 -->
+            </div>
+
+            <div class="form-group" style="margin-bottom: 8px;">
+                <input type="text" id="commentNickname" placeholder="你的昵称（选填，默认匿名）" style="padding: 10px;">
+            </div>
+            <div class="form-group" style="margin-bottom: 12px;">
+                <textarea id="commentContent" placeholder="留下你的讨论..." style="min-height: 60px; padding: 10px;"></textarea>
+            </div>
+            <button class="btn-primary" style="width: 100%; padding: 10px;" onclick="submitComment()" id="commentBtn">发送讨论</button>
+        </div>
+    </div>
+
     <script>
-        // 👇 已经把刚刚获取的 URL 和 Key 填进去了
         const SUPABASE_URL = 'https://usugfffkqdhmwvcvjmrf.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_A0EEq3mPFe1QsOP7nog2Iw_lOAJWWmU';
-
-        // 初始化连接
         const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // 从云端拉取所有人投递的漂流瓶
+        // 🌟 写死的三个初始卡片，不受数据库影响
+        const fixedBottles = [
+            { id: 'fixed-1', nickname: '匿名科研生', type: 'red', content: '求助大家，如果我在写论文时，引用了网络上的图表，但我自己重新画了一遍并且修改了部分数据，这算不算学术不端？导师最近强调了这个问题，我很慌。' },
+            { id: 'fixed-2', nickname: '迷茫的研一', type: 'green', content: '导师总是让我做很多报销和跑腿的杂活，感觉自己像个行政秘书，科研进度很慢。不知道怎么开口跟导师沟通...' },
+            { id: 'fixed-3', nickname: '实验小白', type: 'blue', content: '实验数据跑不出来，已经重复了半个月了，跟导师汇报他总觉得我不够努力。大家遇到实验瓶颈期都是怎么熬过来的？' }
+        ];
+
+        let currentBottleId = null;
+        let currentBottleContent = "";
+
+        // 页面加载时拉取数据
         async function loadBottles() {
-            const { data, error } = await db.from('bottles').select('*').order('id', { ascending: false });
-            if (error) { console.error('获取失败:', error); return; }
+            // 1. 拉取云端新增的漂流瓶
+            const { data: bottlesData, error: bError } = await db.from('bottles').select('*').order('id', { ascending: false });
             
-            const grid = document.getElementById('bottleGrid');
-            grid.innerHTML = '';
+            // 2. 拉取所有评论的数量（用于展示 X条讨论）
+            const { data: commentsData, error: cError } = await db.from('comments').select('bottle_id');
             
-            if(data.length === 0) {
-                grid.innerHTML = '<div style="color: #8F9BB3; text-align: center; width: 100%; grid-column: 1 / -1; padding: 40px;">还没有漂流瓶，快来投递第一个吧！</div>';
-                return;
+            // 统计每个瓶子的评论数
+            const commentCounts = {};
+            if (commentsData) {
+                commentsData.forEach(c => {
+                    commentCounts[c.bottle_id] = (commentCounts[c.bottle_id] || 0) + 1;
+                });
             }
 
-            data.forEach(bottle => {
+            // 合并数据：写死的 + 云端的
+            let allBottles = [...fixedBottles];
+            if (bottlesData && bottlesData.length > 0) {
+                allBottles = allBottles.concat(bottlesData);
+            }
+
+            const grid = document.getElementById('bottleGrid');
+            grid.innerHTML = '';
+
+            allBottles.forEach(bottle => {
+                const count = commentCounts[bottle.id] || 0;
                 const card = document.createElement('div');
                 card.className = 'card';
+                card.onclick = () => openCommentModal(bottle);
+                
                 let tagName = bottle.type === 'red' ? '⚠️ 学术红线探讨' : (bottle.type === 'blue' ? '🔍 科研困惑求助' : '📖 导学关系树洞');
                 
                 card.innerHTML = `
@@ -116,13 +164,83 @@
                         <div class="tag ${bottle.type}">${tagName}</div>
                     </div>
                     <div class="card-content">${bottle.content}</div>
-                    <div class="card-footer">🌊 刚刚打捞</div>
+                    <div class="card-footer">
+                        <span>💬 ${count} 条讨论</span>
+                        <span>💙 捞取讨论</span>
+                    </div>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        // 投递新瓶子到云端
+        // 打开讨论弹窗
+        async function openCommentModal(bottle) {
+            currentBottleId = String(bottle.id);
+            currentBottleContent = bottle.content;
+            
+            document.getElementById('modalOriginalContent').innerText = `【${bottle.nickname}】: ${bottle.content}`;
+            document.getElementById('commentModal').classList.add('active');
+            
+            await loadComments();
+        }
+
+        // 加载特定卡片的讨论
+        async function loadComments() {
+            const list = document.getElementById('commentList');
+            list.innerHTML = '<div style="text-align: center; color: #8F9BB3; font-size: 13px;">加载中...</div>';
+
+            const { data, error } = await db.from('comments').select('*').eq('bottle_id', currentBottleId).order('id', { ascending: true });
+            
+            list.innerHTML = '';
+            if (data && data.length > 0) {
+                data.forEach(c => {
+                    list.innerHTML += `
+                        <div class="comment-item">
+                            <div class="comment-user">👤 ${c.nickname}</div>
+                            <div class="comment-text">${c.content}</div>
+                        </div>
+                    `;
+                });
+                list.scrollTop = list.scrollHeight; // 自动滚到底部
+            } else {
+                list.innerHTML = '<div style="text-align: center; color: #8F9BB3; font-size: 13px; margin-top: 20px;">还没有讨论，快来抢沙发！</div>';
+            }
+        }
+
+        // 提交讨论
+        async function submitComment() {
+            const nickname = document.getElementById('commentNickname').value.trim() || "匿名同学";
+            const content = document.getElementById('commentContent').value.trim();
+            const btn = document.getElementById('commentBtn');
+
+            if (!content) { alert("请填写讨论内容！"); return; }
+
+            btn.innerText = "发送中...";
+            btn.disabled = true;
+
+            const { error } = await db.from('comments').insert([{ 
+                bottle_id: currentBottleId, 
+                nickname: nickname, 
+                content: content 
+            }]);
+
+            if (error) {
+                alert("发送失败，请重试");
+            } else {
+                document.getElementById('commentContent').value = '';
+                await loadComments(); // 刷新弹窗内的讨论
+                loadBottles(); // 刷新主页面的评论数字
+            }
+
+            btn.innerText = "发送讨论";
+            btn.disabled = false;
+        }
+
+        function closeCommentModal() {
+            document.getElementById('commentModal').classList.remove('active');
+        }
+
+        // 投递新漂流瓶
         async function submitPost() {
             const nickname = document.getElementById('postNickname').value.trim() || "匿名用户";
             const content = document.getElementById('postContent').value.trim();
@@ -134,7 +252,6 @@
             btn.innerText = "正在抛入海中...";
             btn.disabled = true;
 
-            // 把数据写进云端数据库（字段名改为 nickname）
             const { error } = await db.from('bottles').insert([{ nickname: nickname, content: content, type: type }]);
 
             if (error) {
@@ -144,14 +261,14 @@
                 document.getElementById('postNickname').value = '';
                 document.getElementById('postContent').value = '';
                 document.getElementById('postModal').classList.remove('active');
-                loadBottles(); // 投递成功后，立刻刷新卡片
+                loadBottles(); // 投递成功后刷新列表
             }
 
             btn.innerText = "抛入海中 🌊";
             btn.disabled = false;
         }
 
-        // 页面刚打开时，加载一次数据
+        // 页面初始化
         loadBottles();
     </script>
 </body>
