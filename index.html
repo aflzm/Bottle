@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#EAF6FB">
+    <meta name="description" content="福州大学2026年研究生科学道德与学风建设月 · “求真·问道”学术诚信漂流瓶">
+    <title>“求真·问道” 学术诚信漂流瓶</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+    <div class="tech-bg" aria-hidden="true">
+        <div class="glow g1"></div>
+        <div class="glow g2"></div>
+        <div class="glow g3"></div>
+    </div>
+
+    <svg class="sprite" aria-hidden="true" focusable="false">
+        <symbol id="i-send" viewBox="0 0 24 24"><path d="M21 3 10.6 13.4"></path><path d="M21 3l-6.6 18-3.4-7.6L3 10 21 3Z"></path></symbol>
+        <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 5 6v5.4c0 4.4 3 7.7 7 9.6 4-1.9 7-5.2 7-9.6V6l-7-3Z"></path><path d="M12 8.6v4.1"></path><path d="M12 16.1h.01"></path></symbol>
+        <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v5.4c0 4.4 3 7.7 7 9.6 4-1.9 7-5.2 7-9.6V6l-7-3Z"></path><path d="m9 12 2.2 2.2L15.4 10"></path></symbol>
+        <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.2"></circle><path d="m20.2 20.2-4.4-4.4"></path></symbol>
+        <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.2A2.2 2.2 0 0 1 6.2 3H20v16.5H6.2A2.2 2.2 0 0 0 4 21.7V5.2Z"></path><path d="M4 17.8a2.2 2.2 0 0 1 2.2-2.2H20"></path><path d="M8.4 7.4h7.2M8.4 11h5"></path></symbol>
+        <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 11.6a8.4 8.4 0 0 1-12.3 7.5L3.4 20.6l1.6-5A8.4 8.4 0 1 1 21 11.6Z"></path><path d="M8.6 11h6.8M8.6 14.4h4.2"></path></symbol>
+        <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8.2" r="3.4"></circle><path d="M4.9 20.2a7.3 7.3 0 0 1 14.2 0"></path></symbol>
+        <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9.2" cy="8.4" r="3.2"></circle><path d="M3 19.6a6.4 6.4 0 0 1 12.4 0"></path><path d="M16.2 5.5a3.2 3.2 0 0 1 0 5.9"></path><path d="M17.6 14.1a6.4 6.4 0 0 1 3.4 5.5"></path></symbol>
+        <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.4"></circle><path d="M12 7.4V12l3.1 2"></path></symbol>
+        <symbol id="i-graduation" viewBox="0 0 24 24"><path d="M2.8 8.6 12 4.2l9.2 4.4L12 13 2.8 8.6Z"></path><path d="M6.4 10.6v4.6c0 1.5 2.5 2.8 5.6 2.8s5.6-1.3 5.6-2.8v-4.6"></path><path d="M21.2 8.6v5.2"></path></symbol>
+        <symbol id="i-feather" viewBox="0 0 24 24"><path d="M20.2 3.8c-5.9 0-10.7 4.1-12.6 9.8l-1.8 5.4 5.4-1.8c5.7-1.9 9.8-6.7 9.8-12.6Z"></path><path d="M4.2 19.8 15 9"></path><path d="M15.6 8.4H11"></path></symbol>
+        <symbol id="i-wave" viewBox="0 0 24 24"><path d="M3 14.4c2-2 4-2 6 0s4 2 6 0 4-2 6 0"></path><path d="M3 19c2-2 4-2 6 0s4 2 6 0 4-2 6 0"></path></symbol>
+        <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4.5 12h14"></path><path d="m13 6.5 6 5.5-6 5.5"></path></symbol>
+        <symbol id="i-bottle" viewBox="0 0 24 24"><path d="M10 2.8h4v4.1l3 3.1v9.2a2.2 2.2 0 0 1-2.2 2.2H9.2A2.2 2.2 0 0 1 7 19.2v-9.2l3-3.1V2.8Z"></path><path d="M9.8 2.8h4.4"></path><path d="M9.6 12.6h4.8M9.6 15.6h3.4"></path></symbol>
+        <symbol id="i-quote" viewBox="0 0 24 24"><path d="M9.3 6.2c-3 1.2-4.8 3.5-4.8 6.4 0 2.5 1.4 4 3.4 4 1.8 0 3.1-1.3 3.1-3.1 0-1.7-1.2-2.9-2.8-2.9-.3 0-.6 0-.9.1.4-1.4 1.4-2.5 2.9-3.2l-.9-1.3Z"></path><path d="M19.1 6.2c-3 1.2-4.8 3.5-4.8 6.4 0 2.5 1.4 4 3.4 4 1.8 0 3.1-1.3 3.1-3.1 0-1.7-1.2-2.9-2.8-2.9-.3 0-.6 0-.9.1.4-1.4 1.4-2.5 2.9-3.2l-.9-1.3Z"></path></symbol>
+        <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3.2 13.6 9 19.4 10.6 13.6 12.2 12 18 10.4 12.2 4.6 10.6 10.4 9 12 3.2Z"></path><path d="M18.8 15.6l.7 2.3 2.3.7-2.3.7-.7 2.3-.7-2.3-2.3-.7 2.3-.7.7-2.3Z"></path></symbol>
+        <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"></path></symbol>
+        <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.3S3.8 15.4 3.8 9.6a4.4 4.4 0 0 1 8.2-2.2 4.4 4.4 0 0 1 8.2 2.2c0 5.8-8.2 10.7-8.2 10.7Z"></path></symbol>
+        <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></symbol>
+        <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="9" r="5.2"></circle><path d="M8.6 13.4 7.4 21l4.6-2.4L16.6 21l-1.2-7.6"></path><path d="m10.1 9 1.3 1.3 2.5-2.5"></path></symbol>
+    </svg>
+
+    <div class="topline"></div>
+
+    <header class="hero">
+        <div class="hero-inner">
+            <div class="hero-copy">
+                <div class="eyebrow">
+                    <svg class="ico" aria-hidden="true"><use href="#i-graduation"></use></svg>
+                    福州大学 2026 年研究生科学道德与学风建设月
+                </div>
+                <h1>
+                    <span class="title-mark">“求真·问道”</span>
+                    <span class="title-main">学术诚信漂流瓶</span>
+                </h1>
+                <div class="title-rule"></div>
+                <p class="subtitle">以匿名漂流瓶为舟，承载科研困惑、学术红线探讨与导学故事；在守望学术诚信中，寻得求真问道的同路人。</p>
+
+                <div class="hero-meta">
+                    <span><svg class="ico" aria-hidden="true"><use href="#i-clock"></use></svg>2026 年</span>
+                    <i aria-hidden="true"></i>
+                    <span><svg class="ico" aria-hidden="true"><use href="#i-users"></use></svg>全体研究生</span>
+                    <i aria-hidden="true"></i>
+                    <span><svg class="ico" aria-hidden="true"><use href="#i-award"></use></svg>计算机与大数据学院</span>
+                </div>
+
+                <div class="hero-actions">
+                    <button class="btn-primary" onclick="document.getElementById('postModal').classList.add('active')">
+                        <svg class="ico" aria-hidden="true"><use href="#i-send"></use></svg>
+                        <span>抛一个漂流瓶</span>
+                    </button>
+                    <button class="btn-ghost" onclick="openSeaModal()">
+                        <svg class="ico" aria-hidden="true"><use href="#i-bottle"></use></svg>
+                        <span>捞一个漂流瓶</span>
+                    </button>
+                </div>
+
+                <div class="legend" style="position: relative;">
+                    <span><i class="chi warm"><svg class="ico l-warm" aria-hidden="true"><use href="#i-sparkle"></use></svg></i>暖光寄语</span>
+                    <span><i class="chi red"><svg class="ico l-red" aria-hidden="true"><use href="#i-shield"></use></svg></i>学术红线探讨</span>
+                    <span><i class="chi blue"><svg class="ico l-blue" aria-hidden="true"><use href="#i-search"></use></svg></i>科研困惑求助</span>
+                    <span><i class="chi green"><svg class="ico l-green" aria-hidden="true"><use href="#i-book"></use></svg></i>导学微故事 / 树洞</span>
+                </div>
+            </div>
+
+            <div class="hero-visual" aria-hidden="true">
+                <div class="bottle-glow"></div>
+                <div class="tech-panel">
+                    <div class="tech-head">
+                        <span class="pulse-dot"></span>
+                        <span class="tech-tag">OCEAN SONAR</span>
+                        <span class="tech-live">实时漂流数据</span>
+                    </div>
+                    <div class="tech-screen">
+                        <canvas id="waveCanvas" width="340" height="156" style="position: relative;"></canvas>
+                        <svg class="sea-bottle" viewBox="0 0 60 120" aria-hidden="true">
+                            <defs>
+                                <linearGradient id="seaGlass" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0" stop-color="#A8E6FF" stop-opacity="0.85"></stop>
+                                    <stop offset="0.5" stop-color="#3E8FCF" stop-opacity="0.5"></stop>
+                                    <stop offset="1" stop-color="#0B2743" stop-opacity="0.85"></stop>
+                                </linearGradient>
+                                <linearGradient id="seaNote" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0" stop-color="#FFF9EA"></stop>
+                                    <stop offset="1" stop-color="#D8C49A"></stop>
+                                </linearGradient>
+                            </defs>
+                            <ellipse cx="30" cy="112" rx="13" ry="3" fill="#38C6E0" opacity="0.3"></ellipse>
+                            <g transform="rotate(-8 30 60)">
+                                <rect x="23" y="8" width="14" height="9" rx="3" fill="#C8A96B"></rect>
+                                <path d="M24 17h12v14c0 4 2 6 5 9 4 4 6 8 6 13v50c0 3-2 5-5 5H18c-3 0-5-2-5-5V53c0-5 2-9 6-13 3-3 5-5 5-9V17Z" fill="url(#seaGlass)" stroke="#BFE9FF" stroke-opacity="0.75" stroke-width="1.6"></path>
+                                <rect x="18" y="58" width="24" height="34" rx="3" fill="url(#seaNote)" opacity="0.95"></rect>
+                                <path d="M22 66h16M22 74h16M22 82h10" stroke="#8A7750" stroke-opacity="0.5" stroke-width="1.2" stroke-linecap="round"></path>
+                                <path d="M15 38c-2 6-3 12-3 20" stroke="#D6F3FF" stroke-opacity="0.55" stroke-width="2" stroke-linecap="round"></path>
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="tech-stats">
+                        <div><b id="statBottles">3</b><span>漂流瓶</span></div>
+                        <div><b id="statComments">0</b><span>讨论</span></div>
+                        <div><b>4</b><span>主题类型</span></div>
+                    </div>
+                </div>
+                <svg class="float-bottle" viewBox="0 0 120 210" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="bottleGlass" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0" stop-color="#CFF1FF" stop-opacity="0.92"></stop>
+                            <stop offset="0.45" stop-color="#5FB6D8" stop-opacity="0.72"></stop>
+                            <stop offset="1" stop-color="#1B6F92" stop-opacity="0.85"></stop>
+                        </linearGradient>
+                        <linearGradient id="bottleNote" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0" stop-color="#FFF9EA"></stop>
+                            <stop offset="1" stop-color="#D8C49A"></stop>
+                        </linearGradient>
+                        <linearGradient id="corkWood" x1="0" y1="0" x2="1" y2="0">
+                            <stop offset="0" stop-color="#8E6C3E"></stop>
+                            <stop offset="0.5" stop-color="#D9BC8C"></stop>
+                            <stop offset="1" stop-color="#8E6C3E"></stop>
+                        </linearGradient>
+                    </defs>
+                    <ellipse cx="60" cy="196" rx="38" ry="7" fill="#159AB8" opacity="0.24"></ellipse>
+                    <g transform="rotate(-10 60 105)">
+                        <path d="M48 26h24v22c0 6 3 10 8 15 7 7 11 14 11 23v90c0 5-4 9-9 9H38c-5 0-9-4-9-9v-90c0-9 4-16 11-23 5-5 8-9 8-15V26Z" fill="url(#bottleGlass)" stroke="#F4FCFF" stroke-width="2" stroke-opacity="0.9"></path>
+                        <path d="M44 30h32" stroke="#FFFFFF" stroke-opacity="0.75" stroke-width="2" stroke-linecap="round"></path>
+                        <rect x="46" y="14" width="28" height="16" rx="5" fill="url(#corkWood)"></rect>
+                        <rect x="45" y="95" width="30" height="70" rx="4" fill="url(#bottleNote)" opacity="0.95"></rect>
+                        <path d="M51 108h18M51 118h18M51 128h12" stroke="#8A7750" stroke-opacity="0.55" stroke-width="1.6" stroke-linecap="round"></path>
+                        <path d="M40 62c-4 10-6 22-6 36" stroke="#FFFFFF" stroke-opacity="0.65" stroke-width="3" stroke-linecap="round"></path>
+                    </g>
+                </svg>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- 海上漂流瓶：捞起未公开展示的瓶子 -->
+    <section class="sea-pit">
+        <div class="sea-head">
+            <div>
+                <span class="section-kicker">SEA BOTTLES · 海上浮瓶</span>
+                <h2 style="position: relative;">海上漂流瓶</h2>
+            </div>
+            <span class="sea-note">
+                <i class="sea-dot" aria-hidden="true"></i>
+                海面上漂着 <b id="hiddenCount">3</b> 只未公开的瓶子 · 点击任意一只捞起
+            </span>
+        </div>
+        <div class="sea-stage" id="seaStage">
+            <div class="sea-wave w1" aria-hidden="true"></div>
+            <div class="sea-wave w2" aria-hidden="true"></div>
+        </div>
+    </section>
+
+    <main class="board">
+        <div class="board-head">
+            <div>
+                <span class="section-kicker">BOTTLE WALL · 匿名漂流</span>
+                <h2>漂流瓶墙</h2>
+            </div>
+            <span class="board-note">
+                <svg class="ico" aria-hidden="true"><use href="#i-wave"></use></svg>
+                已打捞 <b id="bottleCount">3</b> 个漂流瓶 · 自由讨论 · 理性表达
+            </span>
+        </div>
+        <div class="grid" id="bottleGrid"><button type="button" class="add-card">
+                <span class="add-plus"><svg class="ico" aria-hidden="true"><use href="#i-plus"></use></svg></span>
+                <span class="add-title">投递你的漂流瓶</span>
+                <span class="add-sub">匿名写下困惑、红线探讨或导学故事</span>
+            </button></div>
+    </main>
+
+
+    <!-- 投递表单弹窗 -->
+    <div class="modal-overlay" id="postModal" onclick="if (event.target === this) this.classList.remove('active')">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="postTitle">
+            <button class="modal-close" aria-label="关闭" onclick="document.getElementById('postModal').classList.remove('active')">
+                <svg class="ico" aria-hidden="true"><use href="#i-close"></use></svg>
+            </button>
+            <div class="modal-head">
+                <span class="modal-icon"><svg class="ico" aria-hidden="true"><use href="#i-feather"></use></svg></span>
+                <div>
+                    <h2 id="postTitle">投递漂流瓶</h2>
+                    <p class="modal-sub">写下的内容完全匿名，请放心表达</p>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="postType">漂流瓶类型</label>
+                    <select id="postType">
+                        <option value="red">学术红线探讨</option>
+                        <option value="blue">科研困惑求助</option>
+                        <option value="green">导学微故事 / 树洞</option>
+                        <option value="warm">暖光寄语</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="postNickname">你的昵称</label>
+                    <input type="text" id="postNickname" placeholder="例如：匿名科研生、迷茫的研一">
+                </div>
+                <div class="form-group">
+                    <label for="postContent">内容（内容绝对匿名）</label>
+                    <textarea id="postContent" placeholder="写下你的困惑、探讨或是微故事..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>展示方式</label>
+                    <div class="visibility-grid">
+                        <div class="vis-option">
+                            <input type="radio" name="postVisible" id="visPublic" value="true" checked="">
+                            <label for="visPublic">
+                                <span class="vis-title"><svg class="ico" aria-hidden="true"><use href="#i-users"></use></svg>抛入大海 · 公开展示</span>
+                                <span class="vis-desc">漂流到漂流瓶墙，所有人都能看见并参与讨论</span>
+                            </label>
+                        </div>
+                        <div class="vis-option">
+                            <input type="radio" name="postVisible" id="visHidden" value="false">
+                            <label for="visHidden">
+                                <span class="vis-title"><svg class="ico" aria-hidden="true"><use href="#i-wave"></use></svg>漂在海面 · 等待捞起</span>
+                                <span class="vis-desc">不进入漂流瓶墙，只漂在海面上，等待有缘人捞起</span>
+                            </label>
+                        </div>
+                    </div>
+                    <p class="form-hint" id="visHint" style="display: none;">
+                        服务器暂时只支持公开展示，请稍后再试。
+                    </p>
+                </div>
+                <button class="btn-primary" style="width: 100%;" onclick="submitPost()" id="submitBtn">
+                    <svg class="ico" aria-hidden="true"><use href="#i-wave"></use></svg>
+                    <span class="btn-label">抛入海中</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 讨论弹窗 -->
+    <div class="modal-overlay" id="commentModal" onclick="if (event.target === this) closeCommentModal()">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="commentTitle">
+            <button class="modal-close" aria-label="关闭" onclick="closeCommentModal()">
+                <svg class="ico" aria-hidden="true"><use href="#i-close"></use></svg>
+            </button>
+            <div class="modal-head">
+                <span class="modal-icon red"><svg class="ico" aria-hidden="true"><use href="#i-bottle"></use></svg></span>
+                <div>
+                    <h2 id="commentTitle">讨论区</h2>
+                    <p class="modal-sub">就事论事 · 以理相待 · 共同成长</p>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="quote">
+                    <div class="quote-label"><svg class="ico" aria-hidden="true"><use href="#i-quote"></use></svg>漂流瓶原文</div>
+                    <div id="modalOriginalContent" class="quote-text"></div>
+                </div>
+
+                <div class="comment-box" id="commentList">
+                    <!-- 评论列表 -->
+                </div>
+
+                <div class="divider-note">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg>参与讨论
+                </div>
+                <div class="form-group" style="margin-bottom: 10px;">
+                    <input type="text" id="commentNickname" placeholder="你的昵称（选填，默认匿名）" style="padding: 10px 13px;">
+                </div>
+                <div class="form-group" style="margin-bottom: 14px;">
+                    <textarea id="commentContent" placeholder="留下你的讨论..." style="min-height: 66px; padding: 10px 13px;"></textarea>
+                </div>
+                <button class="btn-primary" style="width: 100%; padding: 12px;" onclick="submitComment()" id="commentBtn">
+                    <span class="btn-label">发送讨论</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 捞起漂流瓶弹窗 -->
+    <div class="modal-overlay" id="revealModal" onclick="if (event.target === this) closeReveal()">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="revealTitle">
+            <button class="modal-close" aria-label="关闭" onclick="closeReveal()">
+                <svg class="ico" aria-hidden="true"><use href="#i-close"></use></svg>
+            </button>
+            <div class="modal-head">
+                <span class="modal-icon warm"><svg class="ico" aria-hidden="true"><use href="#i-bottle"></use></svg></span>
+                <div>
+                    <h2 id="revealTitle">捞起漂流瓶</h2>
+                    <p class="modal-sub">这只瓶子没有公开展示，此刻只为你打开</p>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="reveal-tag-row"><span class="tag warm" id="revealTag">暖光寄语</span></div>
+                <div class="quote">
+                    <div class="quote-label"><svg class="ico" aria-hidden="true"><use href="#i-quote"></use></svg>瓶中信</div>
+                    <div class="reveal-text" id="revealText"></div>
+                </div>
+                <div class="reveal-meta" id="revealMeta"></div>
+                <div class="reveal-actions">
+                    <button class="btn-ghost" onclick="closeReveal()">放回大海</button>
+                    <button class="btn-primary" onclick="joinRevealDiscussion()">
+                        <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg>
+                        <span>参与讨论</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 海面选瓶弹窗：点击「捞一个漂流瓶」打开，再挑选一只捞起 -->
+    <div class="modal-overlay" id="seaModal" onclick="if (event.target === this) closeSeaModal()">
+        <div class="modal modal-sea" role="dialog" aria-modal="true" aria-labelledby="seaModalTitle">
+            <button class="modal-close" aria-label="关闭" onclick="closeSeaModal()">
+                <svg class="ico" aria-hidden="true"><use href="#i-close"></use></svg>
+            </button>
+            <div class="modal-head">
+                <span class="modal-icon"><svg class="ico" aria-hidden="true"><use href="#i-wave"></use></svg></span>
+                <div>
+                    <h2 id="seaModalTitle">捞一个漂流瓶</h2>
+                    <p class="modal-sub" id="modalSeaNote">海面上漂着一些没有公开展示的瓶子</p>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="sea-stage modal-sea-stage" id="modalSeaStage">
+                    <div class="sea-wave w1" aria-hidden="true"></div>
+                    <div class="sea-wave w2" aria-hidden="true"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-foot">
+        <div class="foot-seal">
+            <svg class="ico" aria-hidden="true"><use href="#i-sparkle"></use></svg>
+            求真 · 问道
+        </div>
+        <p>福州大学 · 研究生科学道德与学风建设月</p>
+        <p class="foot-sub" style="position: relative;">研究生会组织部和就业实践部</p>
+    </footer>
+
+    <script src="assets/js/banned-words.js"></script>
+    <script src="assets/js/app.js"></script>
+
+
+
+
+</body></html>
