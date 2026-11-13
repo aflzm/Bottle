@@ -2,645 +2,10 @@
 <html lang="zh-CN"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#060E1A">
+    <meta name="theme-color" content="#EAF6FB">
     <meta name="description" content="福州大学2026年研究生科学道德与学风建设月 · “求真·问道”学术诚信漂流瓶">
     <title>“求真·问道” 学术诚信漂流瓶</title>
-    <style>
-        :root {
-            --bg: #060E1A;
-            --bg-2: #0A1728;
-            --panel: rgba(16, 32, 54, 0.72);
-            --panel-solid: #0E1E33;
-            --ink: #EAF2FC;
-            --ink-2: #A9BBD2;
-            --muted: #7E92AC;
-            --line: rgba(110, 170, 255, 0.16);
-            --line-soft: rgba(110, 170, 255, 0.10);
-            --blue: #4C8DFF;
-            --blue-light: #7FB6FF;
-            --cyan: #38C6E0;
-            --seal: #E2685B;
-            --gold: #C8A96B;
-            --green: #4FD1A5;
-            --serif: "Songti SC", "STSong", "SimSun", "Source Han Serif SC", "Noto Serif CJK SC", Georgia, serif;
-            --sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 22px 44px -32px rgba(0, 0, 0, 0.9);
-            --shadow-card-hover: 0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 30px 60px -30px rgba(0, 0, 0, 0.95);
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
-        body {
-            font-family: var(--sans);
-            color: var(--ink);
-            background-color: #040B15;
-            background-image:
-                linear-gradient(180deg, rgba(3, 9, 18, 0.80), rgba(3, 9, 18, 0.88) 42%, rgba(3, 9, 18, 0.95)),
-                url("ocean-bg.jpg");
-            background-size: cover, cover;
-            background-position: center, center 32%;
-            background-repeat: no-repeat, no-repeat;
-            background-attachment: fixed, fixed;
-            min-height: 100vh;
-            -webkit-font-smoothing: antialiased;
-            position: relative;
-            overflow-x: hidden;
-        }
-        ::selection { background: rgba(76, 141, 255, 0.30); color: #fff; }
-        :focus-visible { outline: 2px solid rgba(76, 141, 255, 0.85); outline-offset: 2px; border-radius: 3px; }
-
-        /* ───── 科技风背景 ───── */
-        .tech-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-        .tech-bg::before {
-            content: ""; position: absolute; inset: 0;
-            background-image:
-                linear-gradient(rgba(90, 169, 255, 0.075) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(90, 169, 255, 0.075) 1px, transparent 1px);
-            background-size: 64px 64px;
-            -webkit-mask-image: radial-gradient(ellipse 82% 72% at 50% 26%, #000 26%, transparent 86%);
-            mask-image: radial-gradient(ellipse 82% 72% at 50% 26%, #000 26%, transparent 86%);
-        }
-        .tech-bg::after {
-            content: ""; position: absolute; inset: 0;
-            background-image:
-                linear-gradient(rgba(90, 169, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(90, 169, 255, 0.03) 1px, transparent 1px);
-            background-size: 16px 16px;
-            -webkit-mask-image: radial-gradient(ellipse 70% 60% at 76% 12%, #000 0%, transparent 72%);
-            mask-image: radial-gradient(ellipse 70% 60% at 76% 12%, #000 0%, transparent 72%);
-        }
-        .glow { position: absolute; border-radius: 50%; filter: blur(90px); }
-        .glow.g1 { width: 540px; height: 540px; top: -190px; right: -110px; background: #2A6BFF; opacity: 0.30; }
-        .glow.g2 { width: 440px; height: 440px; left: -150px; top: 210px; background: #12B8D8; opacity: 0.15; }
-        .glow.g3 { width: 640px; height: 360px; left: 30%; bottom: -240px; background: #C8A96B; opacity: 0.07; }
-
-        /* 图标系统 */
-        .sprite { display: none; }
-        .ico {
-            width: 1em; height: 1em; flex: none;
-            fill: none; stroke: currentColor; stroke-width: 1.6;
-            stroke-linecap: round; stroke-linejoin: round;
-            vertical-align: -0.14em;
-        }
-
-        .topline {
-            position: relative; z-index: 2;
-            height: 3px;
-            background: linear-gradient(90deg, var(--blue), var(--cyan) 32%, var(--gold) 62%, rgba(200, 169, 107, 0.1) 86%, transparent);
-            box-shadow: 0 0 24px rgba(76, 141, 255, 0.5);
-        }
-
-        /* ───── 主视觉 ───── */
-        .hero {
-            position: relative; overflow: hidden; z-index: 1;
-            border-bottom: 1px solid var(--line-soft);
-        }
-        .hero::before {
-            content: "诚";
-            position: absolute; left: -46px; bottom: -156px;
-            font-family: var(--serif); font-size: 350px; line-height: 1;
-            color: #9CC6FF; opacity: 0.035; pointer-events: none;
-        }
-        .hero::after {
-            content: ""; position: absolute; right: -180px; top: -210px;
-            width: 540px; height: 540px; border-radius: 50%;
-            border: 1px solid rgba(110, 170, 255, 0.14);
-            box-shadow: inset 0 0 0 30px rgba(76, 141, 255, 0.025), inset 0 0 0 72px rgba(56, 198, 224, 0.02);
-            pointer-events: none;
-        }
-        .hero-inner {
-            position: relative; z-index: 1;
-            max-width: 1180px; margin: 0 auto;
-            padding: 62px 28px 66px;
-            display: grid; grid-template-columns: minmax(0, 1fr) auto;
-            gap: 48px; align-items: center;
-        }
-        .eyebrow {
-            display: inline-flex; align-items: center; gap: 10px;
-            font-size: 12.5px; letter-spacing: 0.16em; color: var(--blue-light);
-            font-weight: 600; margin-bottom: 22px;
-        }
-        .eyebrow::before { content: ""; width: 26px; height: 1px; background: linear-gradient(90deg, var(--blue), transparent); flex: none; }
-        .eyebrow .ico { font-size: 15px; color: var(--gold); }
-
-        h1 {
-            font-family: var(--serif); font-weight: 700;
-            font-size: clamp(32px, 4.5vw, 52px);
-            line-height: 1.24; letter-spacing: 0.02em;
-        }
-        h1 .title-mark {
-            display: block;
-            background: linear-gradient(100deg, #F2F8FF 8%, #A8CEFF 52%, #5AA9FF 100%);
-            -webkit-background-clip: text; background-clip: text;
-            -webkit-text-fill-color: transparent; color: transparent;
-            filter: drop-shadow(0 6px 26px rgba(76, 141, 255, 0.35));
-        }
-        h1 .title-main {
-            display: block; font-size: 0.74em; letter-spacing: 0.1em;
-            margin-top: 9px; color: #DCE9FA;
-        }
-        .title-rule {
-            display: flex; align-items: center; gap: 8px;
-            margin: 26px 0 20px;
-        }
-        .title-rule::before { content: ""; width: 56px; height: 2px; background: linear-gradient(90deg, var(--gold), rgba(200, 169, 107, 0.15)); }
-        .title-rule::after { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 10px var(--cyan); }
-        .subtitle {
-            color: var(--ink-2); font-size: 15px; line-height: 1.9;
-            letter-spacing: 0.04em; max-width: 31em;
-        }
-
-        .hero-meta {
-            display: flex; flex-wrap: wrap; align-items: center;
-            gap: 8px 22px; margin-top: 24px;
-            font-size: 12.5px; color: var(--ink-2); letter-spacing: 0.03em;
-        }
-        .hero-meta span { display: inline-flex; align-items: center; gap: 7px; }
-        .hero-meta .ico { font-size: 14px; color: var(--blue-light); }
-        .hero-meta i { width: 1px; height: 11px; background: rgba(110, 170, 255, 0.22); }
-
-        .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
-
-        .btn-primary {
-            position: relative; overflow: hidden;
-            display: inline-flex; align-items: center; justify-content: center; gap: 9px;
-            background: linear-gradient(135deg, #3D7BFF, #1B4FD8);
-            color: #fff; border: 1px solid rgba(140, 190, 255, 0.45);
-            padding: 14px 28px; border-radius: 6px;
-            font-family: var(--sans); font-size: 15px; letter-spacing: 0.05em;
-            cursor: pointer; transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
-            box-shadow: 0 12px 30px -10px rgba(45, 108, 255, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.25);
-        }
-        .btn-primary .ico { font-size: 17px; }
-        .btn-primary::after {
-            content: ""; position: absolute; inset: 0 auto 0 -60%;
-            width: 45%; transform: skewX(-20deg);
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
-            transition: left 0.55s ease;
-        }
-        .btn-primary:hover { transform: translateY(-2px); filter: brightness(1.06); box-shadow: 0 18px 40px -12px rgba(45, 108, 255, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.25); }
-        .btn-primary:hover::after { left: 120%; }
-        .btn-primary:active { transform: translateY(0); }
-        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
-
-        .btn-ghost {
-            display: inline-flex; align-items: center; gap: 9px;
-            background: rgba(110, 170, 255, 0.07); color: var(--ink); border: 1px solid var(--line);
-            padding: 14px 22px; border-radius: 6px; font-size: 14px; letter-spacing: 0.05em;
-            cursor: pointer; transition: 0.22s ease;
-            backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-        }
-        .btn-ghost .ico { font-size: 16px; color: var(--blue-light); }
-        .btn-ghost:hover { background: rgba(110, 170, 255, 0.14); border-color: rgba(120, 180, 255, 0.35); transform: translateY(-1px); }
-
-        /* 类型图例 */
-        .legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
-        .legend span {
-            display: inline-flex; align-items: center; gap: 7px;
-            font-size: 12px; letter-spacing: 0.04em; color: var(--ink-2);
-            border: 1px solid var(--line-soft); border-radius: 999px;
-            padding: 6px 12px 6px 7px;
-            background: rgba(16, 32, 54, 0.55);
-            backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-            transition: 0.2s ease;
-        }
-        .legend span:hover { background: rgba(24, 46, 76, 0.8); border-color: var(--line); }
-        .legend .chi {
-            width: 21px; height: 21px; border-radius: 50%;
-            display: inline-flex; align-items: center; justify-content: center;
-        }
-        .legend .ico { font-size: 12.5px; }
-        .legend .chi.red { background: rgba(226, 104, 91, 0.14); }
-        .legend .chi.blue { background: rgba(76, 141, 255, 0.16); }
-        .legend .chi.green { background: rgba(79, 209, 165, 0.14); }
-        .legend .l-red { color: #FF8C80; }
-        .legend .l-blue { color: var(--blue-light); }
-        .legend .l-green { color: var(--green); }
-
-        /* 主视觉 · 科技动态模块 */
-        .hero-visual {
-            position: relative; width: 372px; flex: none;
-            justify-self: end; align-self: center;
-        }
-        .tech-panel {
-            position: relative; border-radius: 14px;
-            padding: 16px 16px 14px;
-            background: linear-gradient(160deg, rgba(18, 44, 78, 0.80), rgba(6, 16, 30, 0.92));
-            border: 1px solid rgba(110, 170, 255, 0.26);
-            box-shadow: 0 34px 70px -32px rgba(0, 0, 0, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.07);
-            backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-        }
-        .tech-panel::after {
-            content: ""; position: absolute; inset: 0; border-radius: 14px; pointer-events: none;
-            background:
-                linear-gradient(135deg, rgba(127, 182, 255, 0.5), transparent 22%) top left / 26px 1px no-repeat,
-                linear-gradient(135deg, rgba(127, 182, 255, 0.5), transparent 22%) top left / 1px 26px no-repeat,
-                linear-gradient(315deg, rgba(127, 182, 255, 0.4), transparent 22%) bottom right / 26px 1px no-repeat,
-                linear-gradient(315deg, rgba(127, 182, 255, 0.4), transparent 22%) bottom right / 1px 26px no-repeat;
-        }
-        .tech-head {
-            display: flex; align-items: center; gap: 8px;
-            padding-bottom: 12px; margin-bottom: 12px;
-            border-bottom: 1px solid var(--line-soft);
-            font-size: 10px; letter-spacing: 0.16em; color: var(--muted);
-        }
-        .pulse-dot {
-            position: relative; width: 7px; height: 7px; border-radius: 50%;
-            background: var(--cyan); box-shadow: 0 0 10px var(--cyan); flex: none;
-        }
-        .pulse-dot::after {
-            content: ""; position: absolute; inset: -4px; border-radius: 50%;
-            border: 1px solid rgba(56, 198, 224, 0.65);
-            animation: pulse 2.2s ease-out infinite;
-        }
-        .tech-tag { color: var(--blue-light); font-weight: 700; letter-spacing: 0.2em; }
-        .tech-live { margin-left: auto; letter-spacing: 0.08em; }
-        .tech-screen {
-            position: relative; height: 156px; border-radius: 9px; overflow: hidden;
-            border: 1px solid var(--line-soft);
-            background:
-                radial-gradient(120% 130% at 50% 0%, rgba(34, 88, 150, 0.42), rgba(4, 10, 20, 0.72) 70%),
-                repeating-linear-gradient(0deg, rgba(90, 169, 255, 0.05) 0 1px, transparent 1px 26px);
-        }
-        #waveCanvas { display: block; width: 100%; height: 100%; }
-        .sea-bottle {
-            position: absolute; left: -14%; bottom: 32%; width: 34px; height: auto;
-            filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.45));
-            animation: driftAcross 22s linear infinite;
-            pointer-events: none;
-        }
-        @keyframes driftAcross {
-            0%   { left: -14%; transform: translateY(0) rotate(-5deg); }
-            20%  { transform: translateY(-4px) rotate(3deg); }
-            40%  { transform: translateY(0) rotate(-2deg); }
-            60%  { transform: translateY(-5px) rotate(4deg); }
-            80%  { transform: translateY(-2px) rotate(-3deg); }
-            100% { left: 104%; transform: translateY(0) rotate(-5deg); }
-        }
-        .tech-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
-        .tech-stats div {
-            text-align: center; padding: 9px 4px 8px; border-radius: 9px;
-            background: rgba(76, 141, 255, 0.07); border: 1px solid var(--line-soft);
-        }
-        .tech-stats b {
-            display: block; font-size: 19px; font-weight: 700; line-height: 1.2;
-            color: #DCEBFF; text-shadow: 0 0 18px rgba(90, 169, 255, 0.55);
-            font-variant-numeric: tabular-nums;
-        }
-        .tech-stats span { font-size: 9.5px; letter-spacing: 0.14em; color: var(--muted); }
-        .float-bottle {
-            position: absolute; left: -52px; bottom: -38px; width: 108px;
-            filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.65));
-            animation: floatY 6.5s ease-in-out infinite; pointer-events: none;
-        }
-        .bottle-glow {
-            position: absolute; left: -70px; bottom: -50px;
-            width: 150px; height: 150px; border-radius: 50%;
-            background: radial-gradient(circle, rgba(56, 198, 224, 0.28), transparent 66%);
-            filter: blur(12px); pointer-events: none;
-        }
-        @keyframes pulse { 0% { transform: scale(0.7); opacity: 0.9; } 100% { transform: scale(1.9); opacity: 0; } }
-        @keyframes floatY { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-10px) rotate(2deg); } }
-
-        /* ───── 漂流瓶墙 ───── */
-        .board { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: 48px 28px 74px; }
-        .board-head {
-            display: flex; align-items: flex-end; justify-content: space-between;
-            gap: 16px; flex-wrap: wrap;
-            padding-bottom: 18px; border-bottom: 1px solid var(--line);
-            margin-bottom: 30px;
-        }
-        .section-kicker {
-            display: block; font-size: 10.5px; font-weight: 600;
-            letter-spacing: 0.3em; color: var(--cyan); margin-bottom: 9px;
-            opacity: 0.9;
-        }
-        .board-head h2 {
-            font-family: var(--serif); font-size: 23px; font-weight: 700;
-            letter-spacing: 0.12em; color: var(--ink);
-            display: inline-flex; align-items: center; gap: 12px;
-        }
-        .board-head h2::before {
-            content: ""; width: 3px; height: 19px; border-radius: 2px;
-            background: linear-gradient(180deg, var(--blue), var(--gold));
-            box-shadow: 0 0 12px rgba(76, 141, 255, 0.6);
-        }
-        .board-note {
-            display: inline-flex; align-items: center; gap: 8px;
-            font-size: 12px; letter-spacing: 0.08em; color: var(--muted);
-        }
-        .board-note .ico { color: var(--cyan); }
-        .board-note b { color: var(--blue-light); font-weight: 600; }
-
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(312px, 1fr)); gap: 22px; }
-
-        .card {
-            position: relative; overflow: hidden;
-            background: linear-gradient(160deg, rgba(20, 40, 66, 0.9), rgba(9, 21, 37, 0.92));
-            border: 1px solid var(--line);
-            border-radius: 12px; padding: 22px 24px 0;
-            display: flex; flex-direction: column;
-            cursor: pointer;
-            box-shadow: var(--shadow-card);
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            transition: transform 0.26s ease, box-shadow 0.26s ease, border-color 0.26s ease;
-            animation: cardIn 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
-        }
-        @keyframes cardIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-        .card::before {
-            content: ""; position: absolute; left: 0; top: 22px; width: 3px; height: 34px;
-            border-radius: 0 3px 3px 0; background: var(--blue-light);
-            box-shadow: 0 0 14px rgba(90, 169, 255, 0.7);
-            transition: height 0.28s ease;
-        }
-        .card.type-red::before { background: #FF8C80; box-shadow: 0 0 14px rgba(226, 104, 91, 0.7); }
-        .card.type-blue::before { background: var(--blue-light); }
-        .card.type-green::before { background: var(--green); box-shadow: 0 0 14px rgba(79, 209, 165, 0.6); }
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(110, 170, 255, 0.34);
-            box-shadow: var(--shadow-card-hover), 0 0 0 1px rgba(76, 141, 255, 0.12);
-        }
-        .card:hover::before { height: 52px; }
-
-        .card-mark {
-            position: absolute; right: 10px; bottom: 6px;
-            width: 92px; height: 92px; color: var(--blue-light);
-            opacity: 0.06; pointer-events: none;
-            transform: rotate(-10deg);
-        }
-        .card.type-red .card-mark { color: var(--seal); }
-        .card.type-green .card-mark { color: var(--green); }
-
-        .card-header {
-            display: flex; align-items: flex-start; justify-content: space-between;
-            gap: 12px; margin-bottom: 15px; position: relative;
-        }
-        .card-user {
-            display: inline-flex; align-items: center; gap: 9px;
-            font-size: 13.5px; font-weight: 600; color: var(--ink);
-            letter-spacing: 0.03em; line-height: 1.5; min-width: 0;
-        }
-        .card-user .user-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .avatar {
-            width: 30px; height: 30px; border-radius: 50%;
-            display: inline-flex; align-items: center; justify-content: center;
-            font-family: var(--serif); font-size: 14px; font-weight: 700;
-            color: var(--blue-light); background: rgba(76, 141, 255, 0.14);
-            border: 1px solid rgba(110, 170, 255, 0.22); flex: none;
-        }
-        .type-red .avatar { color: #FF9E94; background: rgba(226, 104, 91, 0.14); border-color: rgba(226, 104, 91, 0.26); }
-        .type-green .avatar { color: var(--green); background: rgba(79, 209, 165, 0.12); border-color: rgba(79, 209, 165, 0.24); }
-
-        .tag {
-            display: inline-flex; align-items: center; gap: 5px; flex: none;
-            font-size: 11.5px; letter-spacing: 0.03em; line-height: 1;
-            padding: 6px 10px; border-radius: 999px; border: 1px solid transparent;
-            white-space: nowrap;
-        }
-        .tag .ico { font-size: 12px; }
-        .tag.red { color: #FF9E94; border-color: rgba(226, 104, 91, 0.30); background: rgba(226, 104, 91, 0.10); }
-        .tag.blue { color: #A6C9FF; border-color: rgba(76, 141, 255, 0.30); background: rgba(76, 141, 255, 0.12); }
-        .tag.green { color: #7BE6C0; border-color: rgba(79, 209, 165, 0.28); background: rgba(79, 209, 165, 0.10); }
-
-        .card-content {
-            font-size: 14.5px; color: var(--ink-2); line-height: 1.85;
-            flex-grow: 1; margin-bottom: 18px; position: relative;
-            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
-        }
-        .card-footer {
-            display: flex; align-items: center; justify-content: space-between; gap: 12px;
-            border-top: 1px solid var(--line-soft); padding: 13px 0 15px;
-            font-size: 12px; letter-spacing: 0.04em; color: var(--muted);
-            position: relative;
-        }
-        .card-footer .meta { display: inline-flex; align-items: center; gap: 6px; }
-        .card-footer .ico { font-size: 14px; }
-        .card-footer .meta-go {
-            display: inline-flex; align-items: center; gap: 5px;
-            color: var(--blue-light); font-weight: 600;
-            transition: gap 0.22s ease, color 0.22s ease;
-        }
-        .card:hover .meta-go { gap: 9px; color: #fff; }
-        /* 投递入口卡片 */
-        .add-card {
-            position: relative; overflow: hidden;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 8px; min-height: 192px; padding: 26px 22px;
-            font-family: inherit; color: inherit;
-            text-align: center; cursor: pointer;
-            border: 1px dashed rgba(110, 170, 255, 0.38); border-radius: 12px;
-            background: linear-gradient(160deg, rgba(34, 82, 138, 0.30), rgba(9, 21, 37, 0.62));
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            transition: transform 0.26s ease, border-color 0.26s ease, box-shadow 0.26s ease, background 0.26s ease;
-            animation: cardIn 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
-        }
-        .add-card::before {
-            content: ""; position: absolute; inset: -40% 30%;
-            background: radial-gradient(circle, rgba(76, 141, 255, 0.22), transparent 62%);
-            opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
-        }
-        .add-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(127, 182, 255, 0.72);
-            background: linear-gradient(160deg, rgba(44, 100, 166, 0.40), rgba(10, 24, 42, 0.68));
-            box-shadow: 0 26px 50px -30px rgba(0, 0, 0, 0.9), 0 0 34px -12px rgba(76, 141, 255, 0.55);
-        }
-        .add-card:hover::before { opacity: 1; }
-        .add-plus {
-            width: 54px; height: 54px; border-radius: 50%;
-            display: grid; place-items: center; color: #CFE4FF;
-            background: rgba(76, 141, 255, 0.16);
-            border: 1px solid rgba(127, 182, 255, 0.5);
-            box-shadow: 0 0 0 7px rgba(76, 141, 255, 0.06), 0 0 26px rgba(76, 141, 255, 0.35);
-            transition: transform 0.3s ease, background 0.3s ease;
-        }
-        .add-plus .ico { font-size: 25px; stroke-width: 2; }
-        .add-card:hover .add-plus { transform: rotate(90deg) scale(1.06); background: rgba(76, 141, 255, 0.30); }
-        .add-title {
-            font-family: var(--serif); font-size: 15.5px; font-weight: 700;
-            letter-spacing: 0.1em; color: var(--ink);
-        }
-        .add-sub { font-size: 11.5px; letter-spacing: 0.04em; color: var(--muted); line-height: 1.7; }
-
-        .card-empty {
-            grid-column: 1 / -1; text-align: center; padding: 64px 20px;
-            color: var(--muted); font-size: 13px; letter-spacing: 0.08em;
-            border: 1px dashed var(--line); border-radius: 12px; background: rgba(16, 32, 54, 0.4);
-        }
-        .card-empty .ico { display: block; margin: 0 auto 14px; font-size: 34px; color: var(--blue-light); opacity: 0.5; }
-
-        .skeleton-card {
-            height: 192px; border: 1px solid var(--line-soft); border-radius: 12px;
-            background: linear-gradient(100deg, rgba(16, 32, 54, 0.6) 32%, rgba(30, 56, 90, 0.75) 50%, rgba(16, 32, 54, 0.6) 68%);
-            background-size: 220% 100%;
-            animation: shimmer 1.5s infinite linear;
-        }
-        @keyframes shimmer { to { background-position: -220% 0; } }
-
-        /* ───── 弹窗 ───── */
-        .modal-overlay {
-            position: fixed; inset: 0; z-index: 100;
-            background: rgba(3, 8, 16, 0.74);
-            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-            display: none; justify-content: center; align-items: center; padding: 24px;
-        }
-        .modal-overlay.active { display: flex; }
-        .modal {
-            position: relative;
-            background: linear-gradient(180deg, #0F2036, #091625);
-            width: 100%; max-width: 512px;
-            border: 1px solid rgba(110, 170, 255, 0.20); border-radius: 14px;
-            box-shadow: 0 40px 90px -24px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(76, 141, 255, 0.06);
-            max-height: 88vh; display: flex; flex-direction: column; overflow: hidden;
-            animation: modalIn 0.26s cubic-bezier(0.22, 0.61, 0.36, 1);
-        }
-        @keyframes modalIn { from { opacity: 0; transform: translateY(14px) scale(0.985); } to { opacity: 1; transform: none; } }
-
-        .modal-close {
-            position: absolute; top: 15px; right: 15px; z-index: 2;
-            width: 32px; height: 32px; border-radius: 50%;
-            background: rgba(110, 170, 255, 0.06); border: 1px solid transparent; color: var(--muted);
-            font-size: 16px; line-height: 1; cursor: pointer;
-            display: inline-flex; align-items: center; justify-content: center;
-            transition: 0.2s ease;
-        }
-        .modal-close:hover { background: rgba(110, 170, 255, 0.14); color: var(--ink); border-color: var(--line); transform: rotate(90deg); }
-
-        .modal-head {
-            display: flex; align-items: flex-start; gap: 14px;
-            padding: 26px 30px 20px; padding-right: 58px;
-            border-bottom: 1px solid var(--line-soft);
-            background: linear-gradient(180deg, rgba(76, 141, 255, 0.08), transparent);
-        }
-        .modal-icon {
-            width: 42px; height: 42px; border-radius: 11px; flex: none;
-            display: inline-flex; align-items: center; justify-content: center;
-            background: rgba(76, 141, 255, 0.14); border: 1px solid rgba(110, 170, 255, 0.24);
-            color: var(--blue-light);
-        }
-        .modal-icon .ico { font-size: 22px; }
-        .modal-icon.red { color: #FF9E94; background: rgba(226, 104, 91, 0.13); border-color: rgba(226, 104, 91, 0.26); }
-        .modal h2 {
-            font-family: var(--serif); font-size: 19px; font-weight: 700;
-            letter-spacing: 0.08em; color: var(--ink); margin-bottom: 5px;
-        }
-        .modal .modal-sub {
-            font-size: 12px; color: var(--muted); letter-spacing: 0.05em;
-        }
-        .modal-body {
-            padding: 20px 30px 26px;
-            overflow-y: auto; display: flex; flex-direction: column; min-height: 0;
-        }
-        .modal-body::-webkit-scrollbar, .comment-box::-webkit-scrollbar, .quote-text::-webkit-scrollbar { width: 6px; }
-        .modal-body::-webkit-scrollbar-thumb, .comment-box::-webkit-scrollbar-thumb, .quote-text::-webkit-scrollbar-thumb { background: rgba(110, 170, 255, 0.25); border-radius: 3px; }
-
-        .form-group { margin-bottom: 16px; }
-        .form-group label {
-            display: block; margin-bottom: 7px;
-            font-size: 12px; letter-spacing: 0.06em; color: var(--ink-2); font-weight: 600;
-        }
-        .form-group select, .form-group textarea, .form-group input {
-            width: 100%; padding: 11px 13px;
-            font-family: var(--sans); font-size: 14px; color: var(--ink);
-            background: rgba(5, 13, 24, 0.72);
-            border: 1px solid rgba(110, 170, 255, 0.20); border-radius: 6px;
-            outline: none; transition: border-color 0.2s ease, box-shadow 0.2s ease;
-        }
-        .form-group textarea { resize: vertical; min-height: 104px; line-height: 1.8; }
-        .form-group select {
-            appearance: none; -webkit-appearance: none; padding-right: 36px; cursor: pointer;
-            background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%237E92AC' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-            background-repeat: no-repeat; background-position: right 14px center;
-        }
-        .form-group select:focus, .form-group textarea:focus, .form-group input:focus {
-            border-color: var(--blue); box-shadow: 0 0 0 3px rgba(76, 141, 255, 0.16);
-        }
-        .form-group ::placeholder { color: #5E7188; }
-        .form-hint { font-size: 11.5px; color: var(--muted); margin-top: 6px; letter-spacing: 0.03em; }
-
-        .quote {
-            position: relative;
-            background: rgba(76, 141, 255, 0.06);
-            border: 1px solid var(--line-soft);
-            border-left: 3px solid var(--gold);
-            border-radius: 0 8px 8px 0; padding: 14px 16px 15px;
-            margin-bottom: 18px;
-        }
-        .quote-label {
-            display: inline-flex; align-items: center; gap: 6px;
-            font-size: 10.5px; letter-spacing: 0.16em; color: var(--gold);
-            font-weight: 600; margin-bottom: 8px;
-        }
-        .quote-label .ico { font-size: 12px; }
-        .quote-text {
-            font-size: 13.5px; line-height: 1.85; color: var(--ink-2);
-            font-family: var(--serif);
-            max-height: 132px; overflow-y: auto;
-        }
-
-        .comment-box { flex-grow: 1; min-height: 0; overflow-y: auto; margin-bottom: 16px; max-height: 250px; padding-right: 6px; }
-        .comment-item { padding: 13px 0; border-bottom: 1px dashed var(--line-soft); display: flex; gap: 10px; }
-        .comment-item:last-child { border-bottom: none; }
-        .comment-item .avatar { width: 28px; height: 28px; font-size: 13px; margin-top: 1px; }
-        .comment-main { min-width: 0; flex: 1; }
-        .comment-user {
-            display: inline-flex; align-items: center; gap: 6px;
-            color: var(--blue-light); font-size: 12.5px; font-weight: 600;
-            letter-spacing: 0.04em; margin-bottom: 5px;
-        }
-        .comment-text { color: var(--ink-2); font-size: 14px; line-height: 1.75; word-break: break-word; }
-        .empty-tip { text-align: center; color: var(--muted); font-size: 12.5px; letter-spacing: 0.06em; margin-top: 24px; }
-        .empty-tip .ico { display: block; margin: 0 auto 10px; font-size: 26px; color: var(--blue-light); opacity: 0.5; }
-
-        .divider-note {
-            display: flex; align-items: center; gap: 10px;
-            font-size: 11.5px; letter-spacing: 0.1em; color: var(--muted);
-            margin: 4px 0 14px;
-        }
-        .divider-note .ico { font-size: 14px; color: var(--cyan); }
-        .divider-note::after { content: ""; flex: 1; height: 1px; background: var(--line-soft); }
-
-        /* ───── 页脚 ───── */
-        .site-foot {
-            position: relative; z-index: 1;
-            border-top: 1px solid var(--line-soft);
-            padding: 30px 28px 40px; text-align: center;
-            background: linear-gradient(180deg, rgba(16, 32, 54, 0.35), transparent);
-        }
-        .foot-seal {
-            display: inline-flex; align-items: center; gap: 12px; margin-bottom: 10px;
-            color: var(--gold); font-family: var(--serif); font-size: 13px; letter-spacing: 0.3em;
-        }
-        .foot-seal::before, .foot-seal::after { content: ""; width: 34px; height: 1px; background: rgba(200, 169, 107, 0.25); }
-        .foot-seal .ico { font-size: 15px; }
-        .site-foot p { font-size: 11.5px; letter-spacing: 0.14em; color: var(--muted); }
-        .site-foot .foot-sub { margin-top: 6px; font-size: 10.5px; letter-spacing: 0.2em; color: #5D7089; }
-
-        @media (max-width: 980px) {
-            .hero-inner { grid-template-columns: 1fr; gap: 40px; padding: 48px 24px 52px; }
-            .hero-visual { justify-self: center; width: 100%; max-width: 372px; }
-            .hero::after { display: none; }
-        }
-        @media (max-width: 560px) {
-            .board { padding: 34px 18px 50px; }
-            .hero-inner { padding: 38px 18px 42px; }
-            .eyebrow { letter-spacing: 0.08em; font-size: 11.5px; }
-            .hero-meta i { display: none; }
-            .btn-primary, .btn-ghost { width: 100%; }
-            .float-bottle { width: 82px; left: -24px; bottom: -28px; }
-            .bottle-glow { left: -30px; bottom: -30px; width: 110px; height: 110px; }
-            .tech-screen { height: 130px; }
-            .modal { border-radius: 12px; }
-            .modal-head { padding: 22px 20px 16px; padding-right: 52px; }
-            .modal-body { padding: 18px 20px 22px; }
-            .card { padding: 20px 20px 0; }
-            .grid { gap: 16px; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
-            .card { animation: none; }
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
@@ -700,11 +65,16 @@
                 <div class="hero-actions">
                     <button class="btn-primary" onclick="document.getElementById('postModal').classList.add('active')">
                         <svg class="ico" aria-hidden="true"><use href="#i-send"></use></svg>
-                        <span>投递你的漂流瓶</span>
+                        <span>抛一个漂流瓶</span>
+                    </button>
+                    <button class="btn-ghost" onclick="openSeaModal()">
+                        <svg class="ico" aria-hidden="true"><use href="#i-bottle"></use></svg>
+                        <span>捞一个漂流瓶</span>
                     </button>
                 </div>
 
-                <div class="legend">
+                <div class="legend" style="position: relative;">
+                    <span><i class="chi warm"><svg class="ico l-warm" aria-hidden="true"><use href="#i-sparkle"></use></svg></i>暖光寄语</span>
                     <span><i class="chi red"><svg class="ico l-red" aria-hidden="true"><use href="#i-shield"></use></svg></i>学术红线探讨</span>
                     <span><i class="chi blue"><svg class="ico l-blue" aria-hidden="true"><use href="#i-search"></use></svg></i>科研困惑求助</span>
                     <span><i class="chi green"><svg class="ico l-green" aria-hidden="true"><use href="#i-book"></use></svg></i>导学微故事 / 树洞</span>
@@ -724,37 +94,37 @@
                         <svg class="sea-bottle" viewBox="0 0 60 120" aria-hidden="true">
                             <defs>
                                 <linearGradient id="seaGlass" x1="0" y1="0" x2="1" y2="1">
-                                    <stop offset="0" stop-color="#A8E6FF" stop-opacity="0.85"/>
-                                    <stop offset="0.5" stop-color="#3E8FCF" stop-opacity="0.5"/>
-                                    <stop offset="1" stop-color="#0B2743" stop-opacity="0.85"/>
+                                    <stop offset="0" stop-color="#A8E6FF" stop-opacity="0.85"></stop>
+                                    <stop offset="0.5" stop-color="#3E8FCF" stop-opacity="0.5"></stop>
+                                    <stop offset="1" stop-color="#0B2743" stop-opacity="0.85"></stop>
                                 </linearGradient>
                                 <linearGradient id="seaNote" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="0" stop-color="#FFF9EA"/>
-                                    <stop offset="1" stop-color="#D8C49A"/>
+                                    <stop offset="0" stop-color="#FFF9EA"></stop>
+                                    <stop offset="1" stop-color="#D8C49A"></stop>
                                 </linearGradient>
                             </defs>
-                            <ellipse cx="30" cy="112" rx="13" ry="3" fill="#38C6E0" opacity="0.3"/>
+                            <ellipse cx="30" cy="112" rx="13" ry="3" fill="#38C6E0" opacity="0.3"></ellipse>
                             <g transform="rotate(-8 30 60)">
-                                <rect x="23" y="8" width="14" height="9" rx="3" fill="#C8A96B"/>
-                                <path d="M24 17h12v14c0 4 2 6 5 9 4 4 6 8 6 13v50c0 3-2 5-5 5H18c-3 0-5-2-5-5V53c0-5 2-9 6-13 3-3 5-5 5-9V17Z" fill="url(#seaGlass)" stroke="#BFE9FF" stroke-opacity="0.75" stroke-width="1.6"/>
-                                <rect x="18" y="58" width="24" height="34" rx="3" fill="url(#seaNote)" opacity="0.95"/>
-                                <path d="M22 66h16M22 74h16M22 82h10" stroke="#8A7750" stroke-opacity="0.5" stroke-width="1.2" stroke-linecap="round"/>
-                                <path d="M15 38c-2 6-3 12-3 20" stroke="#D6F3FF" stroke-opacity="0.55" stroke-width="2" stroke-linecap="round"/>
+                                <rect x="23" y="8" width="14" height="9" rx="3" fill="#C8A96B"></rect>
+                                <path d="M24 17h12v14c0 4 2 6 5 9 4 4 6 8 6 13v50c0 3-2 5-5 5H18c-3 0-5-2-5-5V53c0-5 2-9 6-13 3-3 5-5 5-9V17Z" fill="url(#seaGlass)" stroke="#BFE9FF" stroke-opacity="0.75" stroke-width="1.6"></path>
+                                <rect x="18" y="58" width="24" height="34" rx="3" fill="url(#seaNote)" opacity="0.95"></rect>
+                                <path d="M22 66h16M22 74h16M22 82h10" stroke="#8A7750" stroke-opacity="0.5" stroke-width="1.2" stroke-linecap="round"></path>
+                                <path d="M15 38c-2 6-3 12-3 20" stroke="#D6F3FF" stroke-opacity="0.55" stroke-width="2" stroke-linecap="round"></path>
                             </g>
                         </svg>
                     </div>
                     <div class="tech-stats">
-                        <div><b id="statBottles">6</b><span>漂流瓶</span></div>
+                        <div><b id="statBottles">3</b><span>漂流瓶</span></div>
                         <div><b id="statComments">4</b><span>讨论</span></div>
-                        <div><b>3</b><span>主题类型</span></div>
+                        <div><b>4</b><span>主题类型</span></div>
                     </div>
                 </div>
                 <svg class="float-bottle" viewBox="0 0 120 210" aria-hidden="true">
                     <defs>
                         <linearGradient id="bottleGlass" x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0" stop-color="#A8E6FF" stop-opacity="0.75"></stop>
-                            <stop offset="0.45" stop-color="#3E8FCF" stop-opacity="0.45"></stop>
-                            <stop offset="1" stop-color="#0B2743" stop-opacity="0.82"></stop>
+                            <stop offset="0" stop-color="#CFF1FF" stop-opacity="0.92"></stop>
+                            <stop offset="0.45" stop-color="#5FB6D8" stop-opacity="0.72"></stop>
+                            <stop offset="1" stop-color="#1B6F92" stop-opacity="0.85"></stop>
                         </linearGradient>
                         <linearGradient id="bottleNote" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="0" stop-color="#FFF9EA"></stop>
@@ -766,19 +136,38 @@
                             <stop offset="1" stop-color="#8E6C3E"></stop>
                         </linearGradient>
                     </defs>
-                    <ellipse cx="60" cy="196" rx="38" ry="7" fill="#38C6E0" opacity="0.22"></ellipse>
+                    <ellipse cx="60" cy="196" rx="38" ry="7" fill="#159AB8" opacity="0.24"></ellipse>
                     <g transform="rotate(-10 60 105)">
-                        <path d="M48 26h24v22c0 6 3 10 8 15 7 7 11 14 11 23v90c0 5-4 9-9 9H38c-5 0-9-4-9-9v-90c0-9 4-16 11-23 5-5 8-9 8-15V26Z" fill="url(#bottleGlass)" stroke="#9FE0FF" stroke-width="2" stroke-opacity="0.6"></path>
-                        <path d="M44 30h32" stroke="#9FE0FF" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round"></path>
+                        <path d="M48 26h24v22c0 6 3 10 8 15 7 7 11 14 11 23v90c0 5-4 9-9 9H38c-5 0-9-4-9-9v-90c0-9 4-16 11-23 5-5 8-9 8-15V26Z" fill="url(#bottleGlass)" stroke="#F4FCFF" stroke-width="2" stroke-opacity="0.9"></path>
+                        <path d="M44 30h32" stroke="#FFFFFF" stroke-opacity="0.75" stroke-width="2" stroke-linecap="round"></path>
                         <rect x="46" y="14" width="28" height="16" rx="5" fill="url(#corkWood)"></rect>
-                        <rect x="45" y="95" width="30" height="70" rx="4" fill="url(#bottleNote)" opacity="0.92"></rect>
+                        <rect x="45" y="95" width="30" height="70" rx="4" fill="url(#bottleNote)" opacity="0.95"></rect>
                         <path d="M51 108h18M51 118h18M51 128h12" stroke="#8A7750" stroke-opacity="0.55" stroke-width="1.6" stroke-linecap="round"></path>
-                        <path d="M40 62c-4 10-6 22-6 36" stroke="#D6F3FF" stroke-opacity="0.5" stroke-width="3" stroke-linecap="round"></path>
+                        <path d="M40 62c-4 10-6 22-6 36" stroke="#FFFFFF" stroke-opacity="0.65" stroke-width="3" stroke-linecap="round"></path>
                     </g>
                 </svg>
             </div>
         </div>
     </header>
+
+
+    <!-- 海上漂流瓶：捞起未公开展示的瓶子 -->
+    <section class="sea-pit">
+        <div class="sea-head">
+            <div>
+                <span class="section-kicker">SEA BOTTLES · 海上浮瓶</span>
+                <h2 style="position: relative;">海上漂流瓶</h2>
+            </div>
+            <span class="sea-note">
+                <i class="sea-dot" aria-hidden="true"></i>
+                海面上漂着 <b id="hiddenCount">3</b> 只未公开的瓶子 · 点击任意一只捞起
+            </span>
+        </div>
+        <div class="sea-stage" id="seaStage">
+            <div class="sea-wave w1" aria-hidden="true"></div>
+            <div class="sea-wave w2" aria-hidden="true"></div>
+        </div>
+    </section>
 
     <main class="board">
         <div class="board-head">
@@ -788,99 +177,16 @@
             </div>
             <span class="board-note">
                 <svg class="ico" aria-hidden="true"><use href="#i-wave"></use></svg>
-                已打捞 <b id="bottleCount">6</b> 个漂流瓶 · 自由讨论 · 理性表达
+                已打捞 <b id="bottleCount">3</b> 个漂流瓶 · 自由讨论 · 理性表达
             </span>
         </div>
         <div class="grid" id="bottleGrid"><button type="button" class="add-card">
                 <span class="add-plus"><svg class="ico" aria-hidden="true"><use href="#i-plus"></use></svg></span>
                 <span class="add-title">投递你的漂流瓶</span>
                 <span class="add-sub">匿名写下困惑、红线探讨或导学故事</span>
-            </button><div class="card type-red" style="animation-delay: 0ms;">
-                    <div class="card-header">
-                        <div class="card-user">
-                            <span class="avatar">匿</span>
-                            <span class="user-name">匿名科研生</span>
-                        </div>
-                        <div class="tag red"><svg class="ico" aria-hidden="true"><use href="#i-shield"></use></svg>学术红线探讨</div>
-                    </div>
-                    <div class="card-content">求助大家，如果我在写论文时，引用了网络上的图表，但我自己重新画了一遍并且修改了部分数据，这算不算学术不端？导师最近强调了这个问题，我很慌。</div>
-                    <div class="card-footer">
-                        <span class="meta"><svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg>1 条讨论</span>
-                        <span class="meta-go">捞取讨论<svg class="ico" aria-hidden="true"><use href="#i-arrow"></use></svg></span>
-                    </div>
-                    <svg class="card-mark" aria-hidden="true"><use href="#i-bottle"></use></svg>
-                </div><div class="card type-green" style="animation-delay: 55ms;">
-                    <div class="card-header">
-                        <div class="card-user">
-                            <span class="avatar">迷</span>
-                            <span class="user-name">迷茫的研一</span>
-                        </div>
-                        <div class="tag green"><svg class="ico" aria-hidden="true"><use href="#i-book"></use></svg>导学关系树洞</div>
-                    </div>
-                    <div class="card-content">导师总是让我做很多报销和跑腿的杂活，感觉自己像个行政秘书，科研进度很慢。不知道怎么开口跟导师沟通...</div>
-                    <div class="card-footer">
-                        <span class="meta"><svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg>0 条讨论</span>
-                        <span class="meta-go">捞取讨论<svg class="ico" aria-hidden="true"><use href="#i-arrow"></use></svg></span>
-                    </div>
-                    <svg class="card-mark" aria-hidden="true"><use href="#i-bottle"></use></svg>
-                </div><div class="card type-blue" style="animation-delay: 110ms;">
-                    <div class="card-header">
-                        <div class="card-user">
-                            <span class="avatar">实</span>
-                            <span class="user-name">实验小白</span>
-                        </div>
-                        <div class="tag blue"><svg class="ico" aria-hidden="true"><use href="#i-search"></use></svg>科研困惑求助</div>
-                    </div>
-                    <div class="card-content">实验数据跑不出来，已经重复了半个月了，跟导师汇报他总觉得我不够努力。大家遇到实验瓶颈期都是怎么熬过来的？</div>
-                    <div class="card-footer">
-                        <span class="meta"><svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg>1 条讨论</span>
-                        <span class="meta-go">捞取讨论<svg class="ico" aria-hidden="true"><use href="#i-arrow"></use></svg></span>
-                    </div>
-                    <svg class="card-mark" aria-hidden="true"><use href="#i-bottle"></use></svg>
-                </div><div class="card type-red" style="animation-delay: 165ms;">
-                    <div class="card-header">
-                        <div class="card-user">
-                            <span class="avatar">y</span>
-                            <span class="user-name">yyds</span>
-                        </div>
-                        <div class="tag red"><svg class="ico" aria-hidden="true"><use href="#i-shield"></use></svg>学术红线探讨</div>
-                    </div>
-                    <div class="card-content">88888888</div>
-                    <div class="card-footer">
-                        <span class="meta"><svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg>2 条讨论</span>
-                        <span class="meta-go">捞取讨论<svg class="ico" aria-hidden="true"><use href="#i-arrow"></use></svg></span>
-                    </div>
-                    <svg class="card-mark" aria-hidden="true"><use href="#i-bottle"></use></svg>
-                </div><div class="card type-red" style="animation-delay: 220ms;">
-                    <div class="card-header">
-                        <div class="card-user">
-                            <span class="avatar">s</span>
-                            <span class="user-name">shit刊主编</span>
-                        </div>
-                        <div class="tag red"><svg class="ico" aria-hidden="true"><use href="#i-shield"></use></svg>学术红线探讨</div>
-                    </div>
-                    <div class="card-content">有人在吗？</div>
-                    <div class="card-footer">
-                        <span class="meta"><svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg>0 条讨论</span>
-                        <span class="meta-go">捞取讨论<svg class="ico" aria-hidden="true"><use href="#i-arrow"></use></svg></span>
-                    </div>
-                    <svg class="card-mark" aria-hidden="true"><use href="#i-bottle"></use></svg>
-                </div><div class="card type-blue" style="animation-delay: 275ms;">
-                    <div class="card-header">
-                        <div class="card-user">
-                            <span class="avatar">6</span>
-                            <span class="user-name">6666</span>
-                        </div>
-                        <div class="tag blue"><svg class="ico" aria-hidden="true"><use href="#i-search"></use></svg>科研困惑求助</div>
-                    </div>
-                    <div class="card-content">9999999</div>
-                    <div class="card-footer">
-                        <span class="meta"><svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg>0 条讨论</span>
-                        <span class="meta-go">捞取讨论<svg class="ico" aria-hidden="true"><use href="#i-arrow"></use></svg></span>
-                    </div>
-                    <svg class="card-mark" aria-hidden="true"><use href="#i-bottle"></use></svg>
-                </div></div>
+            </button></div>
     </main>
+
 
     <!-- 投递表单弹窗 -->
     <div class="modal-overlay" id="postModal" onclick="if (event.target === this) this.classList.remove('active')">
@@ -902,6 +208,7 @@
                         <option value="red">学术红线探讨</option>
                         <option value="blue">科研困惑求助</option>
                         <option value="green">导学微故事 / 树洞</option>
+                        <option value="warm">暖光寄语</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -911,6 +218,25 @@
                 <div class="form-group">
                     <label for="postContent">内容（内容绝对匿名）</label>
                     <textarea id="postContent" placeholder="写下你的困惑、探讨或是微故事..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>展示方式</label>
+                    <div class="visibility-grid">
+                        <div class="vis-option">
+                            <input type="radio" name="postVisible" id="visPublic" value="true" checked="">
+                            <label for="visPublic">
+                                <span class="vis-title"><svg class="ico" aria-hidden="true"><use href="#i-users"></use></svg>抛入大海 · 公开展示</span>
+                                <span class="vis-desc">漂流到漂流瓶墙，所有人都能看见并参与讨论</span>
+                            </label>
+                        </div>
+                        <div class="vis-option">
+                            <input type="radio" name="postVisible" id="visHidden" value="false">
+                            <label for="visHidden">
+                                <span class="vis-title"><svg class="ico" aria-hidden="true"><use href="#i-wave"></use></svg>漂在海面 · 等待捞起</span>
+                                <span class="vis-desc">不进入漂流瓶墙，只漂在海面上，等待有缘人捞起</span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
                 <button class="btn-primary" style="width: 100%;" onclick="submitPost()" id="submitBtn">
                     <svg class="ico" aria-hidden="true"><use href="#i-wave"></use></svg>
@@ -959,6 +285,59 @@
         </div>
     </div>
 
+    <!-- 捞起漂流瓶弹窗 -->
+    <div class="modal-overlay" id="revealModal" onclick="if (event.target === this) closeReveal()">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="revealTitle">
+            <button class="modal-close" aria-label="关闭" onclick="closeReveal()">
+                <svg class="ico" aria-hidden="true"><use href="#i-close"></use></svg>
+            </button>
+            <div class="modal-head">
+                <span class="modal-icon warm"><svg class="ico" aria-hidden="true"><use href="#i-bottle"></use></svg></span>
+                <div>
+                    <h2 id="revealTitle">捞起漂流瓶</h2>
+                    <p class="modal-sub">这只瓶子没有公开展示，此刻只为你打开</p>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="reveal-tag-row"><span class="tag warm" id="revealTag">暖光寄语</span></div>
+                <div class="quote">
+                    <div class="quote-label"><svg class="ico" aria-hidden="true"><use href="#i-quote"></use></svg>瓶中信</div>
+                    <div class="reveal-text" id="revealText"></div>
+                </div>
+                <div class="reveal-meta" id="revealMeta"></div>
+                <div class="reveal-actions">
+                    <button class="btn-ghost" onclick="closeReveal()">放回大海</button>
+                    <button class="btn-primary" onclick="joinRevealDiscussion()">
+                        <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg>
+                        <span>参与讨论</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 海面选瓶弹窗：点击「捞一个漂流瓶」打开，再挑选一只捞起 -->
+    <div class="modal-overlay" id="seaModal" onclick="if (event.target === this) closeSeaModal()">
+        <div class="modal modal-sea" role="dialog" aria-modal="true" aria-labelledby="seaModalTitle">
+            <button class="modal-close" aria-label="关闭" onclick="closeSeaModal()">
+                <svg class="ico" aria-hidden="true"><use href="#i-close"></use></svg>
+            </button>
+            <div class="modal-head">
+                <span class="modal-icon"><svg class="ico" aria-hidden="true"><use href="#i-wave"></use></svg></span>
+                <div>
+                    <h2 id="seaModalTitle">捞一个漂流瓶</h2>
+                    <p class="modal-sub" id="modalSeaNote">海面上漂着一些没有公开展示的瓶子</p>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="sea-stage modal-sea-stage" id="modalSeaStage">
+                    <div class="sea-wave w1" aria-hidden="true"></div>
+                    <div class="sea-wave w2" aria-hidden="true"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer class="site-foot">
         <div class="foot-seal">
             <svg class="ico" aria-hidden="true"><use href="#i-sparkle"></use></svg>
@@ -968,270 +347,8 @@
         <p class="foot-sub" style="position: relative;">研会就业实践部、组织部</p>
     </footer>
 
-    <script>
-        const SUPABASE_URL = 'https://usugfffkqdhmwvcvjmrf.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_A0EEq3mPFe1QsOP7nog2Iw_lOAJWWmU';
-        const db = (typeof supabase !== 'undefined') ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+    <script src="assets/js/app.js"></script>
 
-        // 写死的三个初始卡片，不受数据库影响
-        const fixedBottles = [
-            { id: 'fixed-1', nickname: '匿名科研生', type: 'red', content: '求助大家，如果我在写论文时，引用了网络上的图表，但我自己重新画了一遍并且修改了部分数据，这算不算学术不端？导师最近强调了这个问题，我很慌。' },
-            { id: 'fixed-2', nickname: '迷茫的研一', type: 'green', content: '导师总是让我做很多报销和跑腿的杂活，感觉自己像个行政秘书，科研进度很慢。不知道怎么开口跟导师沟通...' },
-            { id: 'fixed-3', nickname: '实验小白', type: 'blue', content: '实验数据跑不出来，已经重复了半个月了，跟导师汇报他总觉得我不够努力。大家遇到实验瓶颈期都是怎么熬过来的？' }
-        ];
-
-        let currentBottleId = null;
-        let currentBottleContent = "";
-
-        // 页面加载时拉取数据
-        async function loadBottles() {
-            let bottlesData = [];
-            const commentCounts = {};
-
-            try {
-                if (db) {
-                    const { data } = await db.from('bottles').select('*').order('id', { ascending: true });
-                    const { data: commentsData } = await db.from('comments').select('bottle_id');
-
-                    bottlesData = data || [];
-                    if (commentsData) {
-                        commentsData.forEach(c => {
-                            commentCounts[c.bottle_id] = (commentCounts[c.bottle_id] || 0) + 1;
-                        });
-                    }
-                }
-            } catch (err) {
-                console.warn('数据加载失败，仅展示初始漂流瓶', err);
-            }
-
-            let allBottles = [...fixedBottles];
-            if (bottlesData && bottlesData.length > 0) {
-                allBottles = allBottles.concat(bottlesData);
-            }
-
-            const grid = document.getElementById('bottleGrid');
-            grid.innerHTML = '';
-
-            const addCard = document.createElement('button');
-            addCard.type = 'button';
-            addCard.className = 'add-card';
-            addCard.innerHTML = `
-                <span class="add-plus"><svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></span>
-                <span class="add-title">投递你的漂流瓶</span>
-                <span class="add-sub">匿名写下困惑、红线探讨或导学故事</span>
-            `;
-            addCard.onclick = () => document.getElementById('postModal').classList.add('active');
-            grid.appendChild(addCard);
-
-            allBottles.forEach((bottle, index) => {
-                const count = commentCounts[bottle.id] || 0;
-                const card = document.createElement('div');
-                card.className = 'card type-' + (bottle.type || 'blue');
-                card.style.animationDelay = Math.min(index * 55, 380) + 'ms';
-                card.onclick = () => openCommentModal(bottle);
-
-                const typeMap = {
-                    red: { icon: 'i-shield', label: '学术红线探讨' },
-                    blue: { icon: 'i-search', label: '科研困惑求助' },
-                    green: { icon: 'i-book', label: '导学关系树洞' }
-                };
-                const meta = typeMap[bottle.type] || typeMap.blue;
-                const nickname = (bottle.nickname || '匿名同学').trim();
-                const initial = nickname.charAt(0) || '匿';
-
-                card.innerHTML = `
-                    <div class="card-header">
-                        <div class="card-user">
-                            <span class="avatar">${initial}</span>
-                            <span class="user-name">${nickname}</span>
-                        </div>
-                        <div class="tag ${bottle.type}"><svg class="ico" aria-hidden="true"><use href="#${meta.icon}"/></svg>${meta.label}</div>
-                    </div>
-                    <div class="card-content">${bottle.content}</div>
-                    <div class="card-footer">
-                        <span class="meta"><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg>${count} 条讨论</span>
-                        <span class="meta-go">捞取讨论<svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></span>
-                    </div>
-                    <svg class="card-mark" aria-hidden="true"><use href="#i-bottle"/></svg>
-                `;
-                grid.appendChild(card);
-            });
-
-            const countEl = document.getElementById('bottleCount');
-            if (countEl) countEl.textContent = allBottles.length;
-
-            const totalComments = Object.values(commentCounts).reduce((a, b) => a + b, 0);
-            const statBottles = document.getElementById('statBottles');
-            const statComments = document.getElementById('statComments');
-            if (statBottles) statBottles.textContent = allBottles.length;
-            if (statComments) statComments.textContent = totalComments;
-        }
-
-        // 打开讨论弹窗
-        async function openCommentModal(bottle) {
-            currentBottleId = String(bottle.id);
-            currentBottleContent = bottle.content;
-
-            document.getElementById('modalOriginalContent').innerText = `【${bottle.nickname}】${bottle.content}`;
-            document.getElementById('commentModal').classList.add('active');
-
-            await loadComments();
-        }
-
-        // 加载特定卡片的讨论
-        async function loadComments() {
-            const list = document.getElementById('commentList');
-            list.innerHTML = '<div class="empty-tip">加载中...</div>';
-
-            let data = [];
-            try {
-                if (db) {
-                    const res = await db.from('comments').select('*').eq('bottle_id', currentBottleId).order('id', { ascending: true });
-                    data = res.data || [];
-                }
-            } catch (err) {
-                console.warn('讨论加载失败', err);
-            }
-
-            list.innerHTML = '';
-            if (data && data.length > 0) {
-                data.forEach(c => {
-                    const name = (c.nickname || '匿名同学').trim();
-                    const initial = name.charAt(0) || '匿';
-                    list.innerHTML += `
-                        <div class="comment-item">
-                            <span class="avatar">${initial}</span>
-                            <div class="comment-main">
-                                <div class="comment-user">${name}</div>
-                                <div class="comment-text">${c.content}</div>
-                            </div>
-                        </div>
-                    `;
-                });
-                list.scrollTop = list.scrollHeight;
-            } else {
-                list.innerHTML = '<div class="empty-tip"><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg>还没有讨论，快来抢沙发！</div>';
-            }
-        }
-
-        // 提交讨论
-        async function submitComment() {
-            const nickname = document.getElementById('commentNickname').value.trim() || "匿名同学";
-            const content = document.getElementById('commentContent').value.trim();
-            const btn = document.getElementById('commentBtn');
-            const label = btn.querySelector('.btn-label');
-
-            if (!content) { alert("请填写讨论内容！"); return; }
-            if (!db) { alert("当前为离线预览状态，暂时无法发送讨论。"); return; }
-
-            label.innerText = "发送中...";
-            btn.disabled = true;
-
-            const { error } = await db.from('comments').insert([{
-                bottle_id: currentBottleId,
-                nickname: nickname,
-                content: content
-            }]);
-
-            if (error) {
-                alert("发送失败，请重试");
-            } else {
-                document.getElementById('commentContent').value = '';
-                await loadComments();
-                loadBottles();
-            }
-
-            label.innerText = "发送讨论";
-            btn.disabled = false;
-        }
-
-        function closeCommentModal() {
-            document.getElementById('commentModal').classList.remove('active');
-        }
-
-        // 投递新漂流瓶
-        async function submitPost() {
-            const nickname = document.getElementById('postNickname').value.trim() || "匿名用户";
-            const content = document.getElementById('postContent').value.trim();
-            const type = document.getElementById('postType').value;
-            const btn = document.getElementById('submitBtn');
-            const label = btn.querySelector('.btn-label');
-
-            if (!content) { alert("请填写漂流瓶内容！"); return; }
-            if (!db) { alert("当前为离线预览状态，暂时无法投递漂流瓶。"); return; }
-
-            label.innerText = "正在抛入海中...";
-            btn.disabled = true;
-
-            const { error } = await db.from('bottles').insert([{ nickname: nickname, content: content, type: type }]);
-
-            if (error) {
-                alert("网络波动，投递失败，请重试");
-                console.error(error);
-            } else {
-                document.getElementById('postNickname').value = '';
-                document.getElementById('postContent').value = '';
-                document.getElementById('postModal').classList.remove('active');
-                loadBottles();
-            }
-
-            label.innerText = "抛入海中";
-            btn.disabled = false;
-        }
-
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Escape') {
-                closeCommentModal();
-                document.getElementById('postModal').classList.remove('active');
-            }
-        });
-
-        // 科技动态波浪 / 粒子模块
-        (function initWaveCanvas() {
-            const canvas = document.getElementById('waveCanvas');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            const W = canvas.width, H = canvas.height;
-            const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            const dots = Array.from({ length: 26 }, () => ({
-                x: Math.random() * W,
-                y: 24 + Math.random() * (H - 44),
-                r: Math.random() * 1.6 + 0.6,
-                s: Math.random() * 0.42 + 0.12,
-                o: Math.random() * 0.45 + 0.2
-            }));
-            let t = 0;
-
-            function frame() {
-                ctx.clearRect(0, 0, W, H);
-                for (let i = 0; i < 3; i++) {
-                    ctx.beginPath();
-                    const amp = 7 + i * 5, freq = 0.018 + i * 0.005, base = H * 0.60 + i * 17;
-                    for (let x = 0; x <= W; x += 4) {
-                        const y = base + Math.sin(x * freq + t * (0.8 + i * 0.22)) * amp + Math.sin(x * freq * 2.3 - t * 0.55) * 3;
-                        if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-                    }
-                    ctx.strokeStyle = i === 0 ? 'rgba(90,169,255,0.55)' : i === 1 ? 'rgba(56,198,224,0.35)' : 'rgba(200,169,107,0.22)';
-                    ctx.lineWidth = i === 0 ? 1.6 : 1;
-                    ctx.stroke();
-                }
-                dots.forEach(d => {
-                    d.y -= d.s;
-                    if (d.y < 18) { d.y = H - 16; d.x = Math.random() * W; }
-                    ctx.beginPath();
-                    ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(127,182,255,' + d.o + ')';
-                    ctx.fill();
-                });
-
-                t += 0.02;
-                if (!reduce) requestAnimationFrame(frame);
-            }
-            frame();
-        })();
-
-        loadBottles();
-    </script>
 
 
 
