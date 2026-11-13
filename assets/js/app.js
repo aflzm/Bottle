@@ -15,56 +15,12 @@ const TYPE_META = {
     warm: { icon: 'i-sparkle', label: '暖光寄语' }
 };
 
-// 固定展示的三个漂流瓶（其中一个为非常正面的暖光寄语）
-const fixedBottles = [
-    { id: 'fixed-1', nickname: '匿名科研生', type: 'red', content: '求助大家，如果我在写论文时，引用了网络上的图表，但我自己重新画了一遍并且修改了部分数据，这算不算学术不端？导师最近强调了这个问题，我很慌。' },
-    { id: 'fixed-2', nickname: '被温柔以待的研二', type: 'warm', content: '第一次投稿被拒的那天，导师没有批评我，只发来一句：“数据没问题，我们再改一版。”后来那张写满修改意见的稿纸，我一直留着。想告诉正在焦虑的你：慢一点没关系，认真走过的每一步都算数。' },
-    { id: 'fixed-3', nickname: '实验小白', type: 'blue', content: '实验数据跑不出来，已经重复了半个月了，跟导师汇报他总觉得我不够努力。大家遇到实验瓶颈期都是怎么熬过来的？' }
-];
-
-// 初始漂在海面、需被捞起的漂流瓶
-const fixedHiddenBottles = [
-    { id: 'hidden-1', nickname: '路过的同学', type: 'warm', visible: false, content: '今天在实验楼捡到一张便签，上面写着“别急，你已经在路上了”。我把它夹进了实验记录本，也想把这句话送给捞到这只瓶子的你。' },
-    { id: 'hidden-2', nickname: '不善言辞的研一', type: 'blue', visible: false, content: '导师平时很少主动交流，我也不太敢敲门。有没有同学分享过和导师建立沟通节奏的方法？' },
-    { id: 'hidden-3', nickname: '三行周报', type: 'green', visible: false, content: '分享一个小习惯：每周给导师发一封三行周报——本周做了什么、遇到什么问题、下周计划。坚持一个学期后，组会压力小了很多，也更容易得到及时反馈。' }
-];
-
 let currentBottleId = null;
 let currentRevealBottle = null;
 // 当前海面上待捞起的瓶子（未公开展示）
 let hiddenBottlesCache = [];
 // 数据库是否已支持 visible 字段（null 表示尚未探测）
 let supportsVisible = null;
-
-// 内置示例瓶（fixed-* / hidden-*）不在数据库里，讨论存在 localStorage
-const LOCAL_COMMENTS_KEY = 'fzu_bottle_local_comments_v1';
-
-function isLocalBottle(id) {
-    return !/^\d+$/.test(String(id));
-}
-
-function readLocalComments() {
-    try {
-        return JSON.parse(localStorage.getItem(LOCAL_COMMENTS_KEY) || '{}') || {};
-    } catch (err) {
-        return {};
-    }
-}
-
-function addLocalComment(id, nickname, content) {
-    const all = readLocalComments();
-    all[id] = all[id] || [];
-    all[id].push({
-        id: 'lc-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
-        nickname,
-        content
-    });
-    try {
-        localStorage.setItem(LOCAL_COMMENTS_KEY, JSON.stringify(all));
-    } catch (err) {
-        console.warn('本地讨论保存失败', err);
-    }
-}
 
 /* ───── 点赞 ─────
    数据库有 bottle_likes 表时全局共享；没有则退化为本地点赞，页面依然可用 */
@@ -131,6 +87,17 @@ async function loadLikes() {
             likeCounts[key] = (likeCounts[key] || 0) + (Number(local[key]) || 0);
         });
     }
+
+    // 计数为 0 说明记录已被清空，本机的“已赞”标记也应失效，避免心形亮着但数字是 0
+    const liked = readJSON(LIKED_KEY);
+    let dirty = false;
+    Object.keys(liked).forEach(key => {
+        if (!likeCounts[key]) {
+            delete liked[key];
+            dirty = true;
+        }
+    });
+    if (dirty) writeJSON(LIKED_KEY, liked);
 }
 
 // 用最新计数刷新页面上所有同 key 的点赞按钮
@@ -163,7 +130,7 @@ async function toggleLike(kind, id, event) {
             }).select('id');
             if (error || !data || !data.length) {
                 console.warn('取消点赞失败', error || '没有删除任何记录，可能缺少 delete 策略');
-                alert('取消点赞失败：请在 Supabase 执行 schema.sql 中 bottle_likes 的删除策略');
+                alert('取消点赞失败了，请稍后再试');
                 return;
             }
         } else {
@@ -271,24 +238,18 @@ async function loadBottles() {
         console.warn('数据加载失败，仅展示初始漂流瓶', err);
     }
 
-    // 合并内置示例瓶的本地讨论数
-    const localComments = readLocalComments();
-    Object.keys(localComments).forEach(id => {
-        commentCounts[id] = (commentCounts[id] || 0) + localComments[id].length;
-    });
-
     await loadLikes();
 
     const publicFromDb = bottlesData.filter(b => b.visible !== false);
     const hiddenFromDb = bottlesData.filter(b => b.visible === false);
 
-    renderWall([...fixedBottles, ...publicFromDb], commentCounts);
-    renderHiddenSea([...fixedHiddenBottles, ...hiddenFromDb]);
+    renderWall(publicFromDb, commentCounts);
+    renderHiddenSea(hiddenFromDb);
 
     const totalComments = Object.values(commentCounts).reduce((a, b) => a + b, 0);
     const statBottles = document.getElementById('statBottles');
     const statComments = document.getElementById('statComments');
-    if (statBottles) statBottles.textContent = fixedBottles.length + publicFromDb.length;
+    if (statBottles) statBottles.textContent = publicFromDb.length;
     if (statComments) statComments.textContent = totalComments;
 
     syncVisibilityOption();
@@ -451,12 +412,7 @@ async function loadComments() {
 
     let data = [];
     try {
-        if (isLocalBottle(currentBottleId)) {
-            data = (readLocalComments()[currentBottleId] || []).map((c, i) => ({
-                ...c,
-                id: c.id || ('local-' + i)
-            }));
-        } else if (db) {
+        if (db) {
             const res = await db.from('comments').select('*').eq('bottle_id', currentBottleId).order('id', { ascending: true });
             if (res.error) console.warn('讨论加载失败', res.error);
             data = res.data || [];
@@ -503,15 +459,6 @@ async function submitComment() {
 
     if (!content) { alert('请填写讨论内容！'); return; }
     if (!validateText(nickname) || !validateText(content)) return;
-
-    // 内置示例瓶：讨论保存在本地，无需数据库
-    if (isLocalBottle(currentBottleId)) {
-        addLocalComment(currentBottleId, nickname, content);
-        document.getElementById('commentContent').value = '';
-        await loadComments();
-        loadBottles();
-        return;
-    }
 
     if (!db) { alert('当前为离线预览状态，暂时无法发送讨论。'); return; }
 
@@ -608,7 +555,7 @@ async function submitPost() {
 
     // 旧库没有 visible 字段时，明确拦截“漂在海面”，避免悄悄变成公开
     if (!visible && supportsVisible === false) {
-        alert('当前数据库尚未启用“隐藏漂流瓶”能力。\n请在 Supabase SQL Editor 执行 supabase/schema.sql 后重试。');
+        alert('服务器暂时无法保存这只瓶子，请稍后再试');
         return;
     }
 
