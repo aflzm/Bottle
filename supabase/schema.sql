@@ -90,3 +90,10 @@ create policy "likes insert by everyone"
     on public.bottle_likes for insert
     to anon, authenticated
     with check (true);
+
+-- 取消点赞需要删除权限（匿名环境无法校验身份，删除范围由前端按 visitor_id 限定）
+drop policy if exists "likes delete by everyone" on public.bottle_likes;
+create policy "likes delete by everyone"
+    on public.bottle_likes for delete
+    to anon, authenticated
+    using (true);

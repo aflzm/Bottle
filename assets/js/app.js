@@ -143,7 +143,7 @@ function refreshLikeButtons(scope) {
         const isLiked = !!liked[key];
         btn.classList.toggle('is-liked', isLiked);
         btn.setAttribute('aria-pressed', isLiked ? 'true' : 'false');
-        btn.title = isLiked ? '已点赞' : '点赞';
+        btn.title = isLiked ? '取消点赞' : '点赞';
     });
 }
 
@@ -151,7 +151,34 @@ async function toggleLike(kind, id, event) {
     if (event) event.stopPropagation();
     const key = likeKey(kind, id);
     const liked = readJSON(LIKED_KEY);
-    if (liked[key]) return;   // 只能点一次，避免刷赞
+
+    // 已赞过 → 取消点赞
+    if (liked[key]) {
+        if (supportsLikes === true) {
+            // select() 让 PostgREST 返回被删的行，才能判断是否真的删掉（0 行也会返回 204）
+            const { data, error } = await db.from('bottle_likes').delete().match({
+                target_type: kind,
+                target_id: String(id),
+                visitor_id: readerId()
+            }).select('id');
+            if (error || !data || !data.length) {
+                console.warn('取消点赞失败', error || '没有删除任何记录，可能缺少 delete 策略');
+                alert('取消点赞失败：请在 Supabase 执行 schema.sql 中 bottle_likes 的删除策略');
+                return;
+            }
+        } else {
+            const local = readJSON(LOCAL_LIKES_KEY);
+            local[key] = Math.max(0, (Number(local[key]) || 0) - 1);
+            if (!local[key]) delete local[key];
+            writeJSON(LOCAL_LIKES_KEY, local);
+        }
+
+        delete liked[key];
+        writeJSON(LIKED_KEY, liked);
+        likeCounts[key] = Math.max(0, (likeCounts[key] || 0) - 1);
+        refreshLikeButtons();
+        return;
+    }
 
     if (supportsLikes === true) {
         const { error } = await db.from('bottle_likes').insert([{
@@ -159,8 +186,14 @@ async function toggleLike(kind, id, event) {
             target_id: String(id),
             visitor_id: readerId()
         }]);
-        // 23505 表示这台设备已经点过，按成功处理
-        if (error && error.code !== '23505') {
+        // 23505 表示这行本来就存在，计数已包含它，不能再加一次
+        if (error && error.code === '23505') {
+            liked[key] = 1;
+            writeJSON(LIKED_KEY, liked);
+            refreshLikeButtons();
+            return;
+        }
+        if (error) {
             console.warn('点赞失败', error);
             alert('点赞失败，请稍后再试');
             return;

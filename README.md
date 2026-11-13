@@ -16,7 +16,7 @@
 - **海上捞瓶**：海面画里漂浮着许多未公开的瓶子；点首屏「捞一个漂流瓶」会先弹出海面，
   再点任意一只瓶子把它捞起来阅读，并可进一步参与讨论。
 - **四种漂流瓶类型**：学术红线探讨、科研困惑求助、导学关系树洞、暖光寄语。
-- **点赞**：漂流瓶卡片与每条讨论都可以点赞，同一设备只能点一次；
+- **点赞**：漂流瓶卡片与每条讨论都可以点赞，再点一次即取消；同一设备只计一次；
   有 `bottle_likes` 表时为全站共享计数，没有则自动退化为本地点赞。
 - **违禁词过滤**：漂流瓶与讨论在提交前都会做归一化匹配，命中违禁词即拦截发布；
   词库单独放在 `assets/js/banned-words.js`，改词无需动主逻辑。
@@ -79,11 +79,13 @@ const SUPABASE_KEY = '<your-anon-or-publishable-key>';
 `alter table ... add column if not exists visible ...` 语句即可补齐。
 
 `bottle_likes` 不存在时，点赞会自动改用浏览器 localStorage，页面不会报错，
-只是计数不跨设备共享。
+只是计数不跨设备共享。取消点赞依赖 `bottle_likes` 的 delete 策略，未建表时走本地逻辑，不受影响。
 
 ### 安全说明
 
-schema.sql 已开启 RLS：匿名用户只能 `insert` 与 `select`，不能 `update` / `delete`。
+schema.sql 已开启 RLS：`bottles` / `comments` 匿名用户只能 `insert` 与 `select`，
+不能 `update` / `delete`；`bottle_likes` 额外开放 `delete` 以支持取消点赞，
+前端按本机 `visitor_id` 限定删除范围。
 违禁词过滤在前端完成，仅用于体验引导；如需强约束，可在数据库侧再加触发器或 Edge Function 校验。
 
 ## 部署到 GitHub Pages
