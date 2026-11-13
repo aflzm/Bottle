@@ -25,17 +25,30 @@
             font-family: var(--sans);
             color: var(--ink);
             background-color: #EAF6FB;
-            background-image:
-                linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(240, 250, 254, 0.70) 42%, rgba(248, 253, 255, 0.82)),
-                url("../img/ocean-bg.png");
-            background-size: cover, cover;
-            background-position: center, center 38%;
-            background-repeat: no-repeat, no-repeat;
-            background-attachment: fixed, fixed;
             min-height: 100vh;
+            min-height: 100dvh;
             -webkit-font-smoothing: antialiased;
             position: relative;
             overflow-x: hidden;
+        }
+        /* 背景铺满整个屏幕：固定视口大小的图层，手机/电脑任意比例都用 cover 自适应 */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(240, 250, 254, 0.70) 42%, rgba(248, 253, 255, 0.82)),
+                url("../img/ocean-bg.jpg");
+            background-size: cover, cover;
+            background-position: center, center;
+            background-repeat: no-repeat, no-repeat;
+            background-color: #EAF6FB;
+            pointer-events: none;
+        }
+        @supports (height: 100svh) {
+            /* 移动端地址栏收起/展开时不跳动 */
+            body::before { height: 100svh; bottom: auto; }
         }
         ::selection { background: rgba(42, 127, 212, 0.18); color: var(--ink); }
         :focus-visible { outline: 2px solid rgba(42, 127, 212, 0.75); outline-offset: 2px; border-radius: 3px; }
@@ -414,6 +427,30 @@
             transition: gap 0.22s ease, color 0.22s ease;
         }
         .card:hover .meta-go { gap: 9px; color: #0E4C6B; }
+        /* 点赞 */
+        .card-actions { display: inline-flex; align-items: center; gap: 14px; margin-left: auto; }
+        .like-btn {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 4px 9px; border-radius: 999px;
+            border: 1px solid rgba(32, 106, 140, 0.16);
+            background: rgba(255, 255, 255, 0.62);
+            color: var(--muted); font-family: var(--sans); font-size: 11.5px;
+            letter-spacing: 0.02em; cursor: pointer;
+            transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+        }
+        .like-btn .ico { font-size: 13px; stroke-width: 1.7; }
+        .like-btn .like-count { font-variant-numeric: tabular-nums; line-height: 1; }
+        .like-btn:hover {
+            color: #C4483C; border-color: rgba(217, 88, 75, 0.34);
+            background: rgba(217, 88, 75, 0.08);
+        }
+        .like-btn.is-liked {
+            color: #D9584B; border-color: rgba(217, 88, 75, 0.42);
+            background: rgba(217, 88, 75, 0.12);
+        }
+        .like-btn.is-liked .ico { fill: currentColor; }
+        .like-btn.is-liked:hover { background: rgba(217, 88, 75, 0.14); }
+        .comment-like { flex: none; align-self: flex-start; margin-top: 2px; }
         /* 投递入口卡片 */
         .add-card {
             position: relative; overflow: hidden;
@@ -513,6 +550,7 @@
         }
         .modal-icon .ico { font-size: 22px; }
         .modal-icon.red { color: #C4483C; background: rgba(217, 88, 75, 0.10); border-color: rgba(217, 88, 75, 0.22); }
+        .modal-icon.warm { color: #8E6820; background: rgba(180, 136, 61, 0.12); border-color: rgba(180, 136, 61, 0.26); }
         .modal h2 {
             font-family: var(--serif); font-size: 19px; font-weight: 700;
             letter-spacing: 0.08em; color: var(--ink); margin-bottom: 5px;
@@ -610,13 +648,14 @@
         .site-foot .foot-sub { margin-top: 6px; font-size: 10.5px; letter-spacing: 0.2em; color: #7C97A8; }
 
         @media (max-width: 980px) {
-            .hero-inner { grid-template-columns: 1fr; gap: 40px; padding: 48px 24px 52px; }
-            .hero-visual { justify-self: center; width: 100%; max-width: 372px; }
+            .hero-inner { grid-template-columns: minmax(0, 1fr); gap: 40px; padding: 48px 24px 52px; }
+            .hero-visual { width: 100%; max-width: 372px; justify-self: center; }
             .hero::after { display: none; }
         }
         @media (max-width: 560px) {
             .board { padding: 34px 18px 50px; }
             .hero-inner { padding: 38px 18px 42px; }
+            .hero-visual { max-width: 100%; }
             .eyebrow { letter-spacing: 0.08em; font-size: 11.5px; }
             .hero-meta i { display: none; }
             .btn-primary, .btn-ghost { width: 100%; }
@@ -645,7 +684,10 @@
         /* 展示方式选择 */
         .visibility-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
         .vis-option { position: relative; }
-        .vis-option input { position: absolute; opacity: 0; pointer-events: none; }
+        .vis-option input {
+            position: absolute; inset: 0; width: 100%; height: 100%; margin: 0;
+            opacity: 0; cursor: pointer; z-index: 1;
+        }
         .vis-option label {
             display: flex; flex-direction: column; gap: 5px; height: 100%;
             padding: 12px 13px; border-radius: 9px; cursor: pointer;
@@ -663,6 +705,9 @@
             box-shadow: 0 0 0 1px rgba(42, 127, 212, 0.18), 0 8px 24px -18px rgba(42, 127, 212, 0.6);
         }
         .vis-option input:focus-visible + label { outline: 2px solid rgba(42, 127, 212, 0.75); outline-offset: 2px; }
+        .vis-option input:disabled + label { opacity: 0.55; cursor: not-allowed; }
+        .vis-option input:disabled + label:hover { border-color: rgba(32, 106, 140, 0.16); }
+        .form-hint code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11px; color: var(--ink-2); }
 
         /* ───── 海上漂流瓶 ───── */
         .sea-pit { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: 48px 28px 0; }

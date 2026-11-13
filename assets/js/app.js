@@ -2,12 +2,11 @@ const SUPABASE_URL = 'https://usugfffkqdhmwvcvjmrf.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_A0EEq3mPFe1QsOP7nog2Iw_lOAJWWmU';
 const db = (typeof supabase !== 'undefined') ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
-// 违禁词词库：命中任意一个即禁止发布
-const BANNED_WORDS = [
-    '代写', '代发', '代考', '枪手', '包过', '刷单', '博彩', '赌博', '网赌',
-    '色情', '黄片', '约炮', '卖淫', '嫖娼', '毒品', '冰毒', '摇头丸',
-    '傻逼', '操你', '尼玛', '去死', '贱人', '弱智', '脑残'
-];
+// 违禁词词库位于 assets/js/banned-words.js，单独维护
+const BANNED_WORDS = window.BANNED_WORDS || [];
+
+// 禁止发布网址、图片、视频等外链内容（纯文字社区）
+const LINK_OR_MEDIA_RE = /(https?:\/\/|www\.|(?:[a-z0-9-]+\.)+(?:com|cn|net|org|io|me|cc|tv|xyz|top|vip|link|site|club|shop|app)\b|data:image|<img|<video|<iframe|\[img\]|\[url\]|\[video\])/i;
 
 const TYPE_META = {
     red: { icon: 'i-shield', label: '学术红线探讨' },
@@ -34,6 +33,149 @@ let currentBottleId = null;
 let currentRevealBottle = null;
 // 当前海面上待捞起的瓶子（未公开展示）
 let hiddenBottlesCache = [];
+// 数据库是否已支持 visible 字段（null 表示尚未探测）
+let supportsVisible = null;
+
+// 内置示例瓶（fixed-* / hidden-*）不在数据库里，讨论存在 localStorage
+const LOCAL_COMMENTS_KEY = 'fzu_bottle_local_comments_v1';
+
+function isLocalBottle(id) {
+    return !/^\d+$/.test(String(id));
+}
+
+function readLocalComments() {
+    try {
+        return JSON.parse(localStorage.getItem(LOCAL_COMMENTS_KEY) || '{}') || {};
+    } catch (err) {
+        return {};
+    }
+}
+
+function addLocalComment(id, nickname, content) {
+    const all = readLocalComments();
+    all[id] = all[id] || [];
+    all[id].push({
+        id: 'lc-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+        nickname,
+        content
+    });
+    try {
+        localStorage.setItem(LOCAL_COMMENTS_KEY, JSON.stringify(all));
+    } catch (err) {
+        console.warn('本地讨论保存失败', err);
+    }
+}
+
+/* ───── 点赞 ─────
+   数据库有 bottle_likes 表时全局共享；没有则退化为本地点赞，页面依然可用 */
+const LOCAL_LIKES_KEY = 'fzu_bottle_likes_v1';   // 本地点赞数 { "bottle:fixed-1": 2 }
+const LIKED_KEY = 'fzu_bottle_liked_v1';         // 本机已赞过的对象
+const VISITOR_KEY = 'fzu_bottle_visitor_v1';     // 本机标识，用于去重
+
+let supportsLikes = null;
+let likeCounts = {};
+
+function likeKey(kind, id) {
+    return kind + ':' + id;
+}
+
+function readJSON(key) {
+    try {
+        return JSON.parse(localStorage.getItem(key) || '{}') || {};
+    } catch (err) {
+        return {};
+    }
+}
+
+function writeJSON(key, value) {
+    try {
+        localStorage.setItem(key, JSON.stringify(value));
+    } catch (err) {
+        console.warn('本地状态保存失败', err);
+    }
+}
+
+function readerId() {
+    try {
+        let id = localStorage.getItem(VISITOR_KEY);
+        if (!id) {
+            id = 'v-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+            localStorage.setItem(VISITOR_KEY, id);
+        }
+        return id;
+    } catch (err) {
+        return 'v-anonymous';
+    }
+}
+
+async function loadLikes() {
+    likeCounts = {};
+    if (db) {
+        const { data, error } = await db.from('bottle_likes').select('target_type, target_id');
+        supportsLikes = !error;
+        if (error) {
+            console.warn('点赞表不可用，改用本地点赞：', error.message);
+        } else {
+            (data || []).forEach(row => {
+                const key = likeKey(row.target_type, row.target_id);
+                likeCounts[key] = (likeCounts[key] || 0) + 1;
+            });
+        }
+    } else {
+        supportsLikes = false;
+    }
+
+    if (supportsLikes !== true) {
+        const local = readJSON(LOCAL_LIKES_KEY);
+        Object.keys(local).forEach(key => {
+            likeCounts[key] = (likeCounts[key] || 0) + (Number(local[key]) || 0);
+        });
+    }
+}
+
+// 用最新计数刷新页面上所有同 key 的点赞按钮
+function refreshLikeButtons(scope) {
+    const liked = readJSON(LIKED_KEY);
+    (scope || document).querySelectorAll('.like-btn').forEach(btn => {
+        const key = likeKey(btn.dataset.likeKind, btn.dataset.likeId);
+        const icon = btn.querySelector('.like-count');
+        if (icon) icon.textContent = likeCounts[key] || 0;
+        const isLiked = !!liked[key];
+        btn.classList.toggle('is-liked', isLiked);
+        btn.setAttribute('aria-pressed', isLiked ? 'true' : 'false');
+        btn.title = isLiked ? '已点赞' : '点赞';
+    });
+}
+
+async function toggleLike(kind, id, event) {
+    if (event) event.stopPropagation();
+    const key = likeKey(kind, id);
+    const liked = readJSON(LIKED_KEY);
+    if (liked[key]) return;   // 只能点一次，避免刷赞
+
+    if (supportsLikes === true) {
+        const { error } = await db.from('bottle_likes').insert([{
+            target_type: kind,
+            target_id: String(id),
+            visitor_id: readerId()
+        }]);
+        // 23505 表示这台设备已经点过，按成功处理
+        if (error && error.code !== '23505') {
+            console.warn('点赞失败', error);
+            alert('点赞失败，请稍后再试');
+            return;
+        }
+    } else {
+        const local = readJSON(LOCAL_LIKES_KEY);
+        local[key] = (Number(local[key]) || 0) + 1;
+        writeJSON(LOCAL_LIKES_KEY, local);
+    }
+
+    liked[key] = 1;
+    writeJSON(LIKED_KEY, liked);
+    likeCounts[key] = (likeCounts[key] || 0) + 1;
+    refreshLikeButtons();
+}
 
 function esc(value) {
     return String(value == null ? '' : value).replace(/[&<>"']/g, ch => ({
@@ -56,6 +198,10 @@ function validateText(text) {
         alert('内容包含违禁词“' + word + '”，请修改后再发布。');
         return false;
     }
+    if (LINK_OR_MEDIA_RE.test(String(text || ''))) {
+        alert('这里只能发文字：请勿发布网址、图片或视频链接。');
+        return false;
+    }
     return true;
 }
 
@@ -66,10 +212,22 @@ async function loadBottles() {
 
     try {
         if (db) {
-            const { data } = await db.from('bottles').select('*').order('id', { ascending: true });
-            const { data: commentsData } = await db.from('comments').select('bottle_id');
+            // 先按含 visible 字段查询，失败则判定旧库并降级
+            let res = await db.from('bottles').select('id, nickname, content, type, visible').order('id', { ascending: true });
+            if (res.error) {
+                supportsVisible = false;
+                console.warn('数据库未添加 visible 字段，请执行 supabase/schema.sql：', res.error.message);
+                res = await db.from('bottles').select('id, nickname, content, type').order('id', { ascending: true });
+            } else {
+                supportsVisible = true;
+            }
 
-            bottlesData = data || [];
+            const { data: commentsData, error: commentError } = await db.from('comments').select('bottle_id');
+
+            if (res.error) console.warn('漂流瓶读取失败（请检查表结构与 RLS 策略）', res.error);
+            if (commentError) console.warn('讨论数读取失败', commentError);
+
+            bottlesData = res.data || [];
             if (commentsData) {
                 commentsData.forEach(c => {
                     commentCounts[c.bottle_id] = (commentCounts[c.bottle_id] || 0) + 1;
@@ -79,6 +237,14 @@ async function loadBottles() {
     } catch (err) {
         console.warn('数据加载失败，仅展示初始漂流瓶', err);
     }
+
+    // 合并内置示例瓶的本地讨论数
+    const localComments = readLocalComments();
+    Object.keys(localComments).forEach(id => {
+        commentCounts[id] = (commentCounts[id] || 0) + localComments[id].length;
+    });
+
+    await loadLikes();
 
     const publicFromDb = bottlesData.filter(b => b.visible !== false);
     const hiddenFromDb = bottlesData.filter(b => b.visible === false);
@@ -91,6 +257,24 @@ async function loadBottles() {
     const statComments = document.getElementById('statComments');
     if (statBottles) statBottles.textContent = fixedBottles.length + publicFromDb.length;
     if (statComments) statComments.textContent = totalComments;
+
+    syncVisibilityOption();
+}
+
+// 旧库缺少 visible 字段时，禁用「漂在海面」并给出提示
+function syncVisibilityOption() {
+    const hiddenInput = document.getElementById('visHidden');
+    const hint = document.getElementById('visHint');
+    if (!hiddenInput) return;
+
+    const available = supportsVisible !== false;
+    hiddenInput.disabled = !available;
+    if (hint) hint.style.display = available ? 'none' : 'block';
+
+    if (!available) {
+        const publicInput = document.getElementById('visPublic');
+        if (publicInput) publicInput.checked = true;
+    }
 }
 
 function renderWall(bottles, commentCounts) {
@@ -113,7 +297,15 @@ function renderWall(bottles, commentCounts) {
         const card = document.createElement('div');
         card.className = 'card type-' + (bottle.type || 'blue');
         card.style.animationDelay = Math.min(index * 55, 380) + 'ms';
+        card.setAttribute('role', 'button');
+        card.setAttribute('tabindex', '0');
         card.onclick = () => openCommentModal(bottle);
+        card.onkeydown = e => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                openCommentModal(bottle);
+            }
+        };
 
         const meta = TYPE_META[bottle.type] || TYPE_META.blue;
         const nickname = (bottle.nickname || '匿名同学').trim();
@@ -130,12 +322,27 @@ function renderWall(bottles, commentCounts) {
             <div class="card-content">${esc(bottle.content)}</div>
             <div class="card-footer">
                 <span class="meta"><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg>${count} 条讨论</span>
-                <span class="meta-go">捞取讨论<svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></span>
+                <span class="card-actions">
+                    <button type="button" class="like-btn" data-like-kind="bottle" data-like-id="${esc(bottle.id)}" aria-pressed="false" title="点赞">
+                        <svg class="ico" aria-hidden="true"><use href="#i-heart"/></svg>
+                        <span class="like-count">0</span>
+                    </button>
+                    <span class="meta-go">捞取讨论<svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></span>
+                </span>
             </div>
             <svg class="card-mark" aria-hidden="true"><use href="#i-bottle"/></svg>
         `;
+
+        const likeBtn = card.querySelector('.like-btn');
+        if (likeBtn) {
+            likeBtn.onclick = e => toggleLike('bottle', bottle.id, e);
+            likeBtn.onkeydown = e => e.stopPropagation();
+        }
+
         grid.appendChild(card);
     });
+
+    refreshLikeButtons(grid);
 
     const countEl = document.getElementById('bottleCount');
     if (countEl) countEl.textContent = bottles.length;
@@ -211,8 +418,14 @@ async function loadComments() {
 
     let data = [];
     try {
-        if (db) {
+        if (isLocalBottle(currentBottleId)) {
+            data = (readLocalComments()[currentBottleId] || []).map((c, i) => ({
+                ...c,
+                id: c.id || ('local-' + i)
+            }));
+        } else if (db) {
             const res = await db.from('comments').select('*').eq('bottle_id', currentBottleId).order('id', { ascending: true });
+            if (res.error) console.warn('讨论加载失败', res.error);
             data = res.data || [];
         }
     } catch (err) {
@@ -231,9 +444,17 @@ async function loadComments() {
                         <div class="comment-user">${esc(name)}</div>
                         <div class="comment-text">${esc(c.content)}</div>
                     </div>
+                    <button type="button" class="like-btn comment-like" data-like-kind="comment" data-like-id="${esc(c.id)}" aria-pressed="false" title="点赞">
+                        <svg class="ico" aria-hidden="true"><use href="#i-heart"/></svg>
+                        <span class="like-count">0</span>
+                    </button>
                 </div>
             `;
         });
+        list.querySelectorAll('.like-btn').forEach(btn => {
+            btn.onclick = e => toggleLike('comment', btn.dataset.likeId, e);
+        });
+        refreshLikeButtons(list);
         list.scrollTop = list.scrollHeight;
     } else {
         list.innerHTML = '<div class="empty-tip"><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg>还没有讨论，快来抢沙发！</div>';
@@ -249,6 +470,16 @@ async function submitComment() {
 
     if (!content) { alert('请填写讨论内容！'); return; }
     if (!validateText(nickname) || !validateText(content)) return;
+
+    // 内置示例瓶：讨论保存在本地，无需数据库
+    if (isLocalBottle(currentBottleId)) {
+        addLocalComment(currentBottleId, nickname, content);
+        document.getElementById('commentContent').value = '';
+        await loadComments();
+        loadBottles();
+        return;
+    }
+
     if (!db) { alert('当前为离线预览状态，暂时无法发送讨论。'); return; }
 
     label.innerText = '发送中...';
@@ -342,28 +573,23 @@ async function submitPost() {
     if (!validateText(nickname) || !validateText(content)) return;
     if (!db) { alert('当前为离线预览状态，暂时无法投递漂流瓶。'); return; }
 
+    // 旧库没有 visible 字段时，明确拦截“漂在海面”，避免悄悄变成公开
+    if (!visible && supportsVisible === false) {
+        alert('当前数据库尚未启用“隐藏漂流瓶”能力。\n请在 Supabase SQL Editor 执行 supabase/schema.sql 后重试。');
+        return;
+    }
+
     label.innerText = '正在抛入海中...';
     btn.disabled = true;
 
-    let result = await db.from('bottles').insert([{ nickname, content, type, visible }]);
+    const payload = { nickname, content, type };
+    if (supportsVisible !== false) payload.visible = visible;
 
-    // 兼容尚未添加 visible 字段的旧数据库
-    if (result.error) {
-        const msg = (result.error.message || '').toLowerCase();
-        if (msg.includes('visible') || msg.includes('column') || msg.includes('schema')) {
-            const retry = await db.from('bottles').insert([{ nickname, content, type }]);
-            if (!retry.error) {
-                result = { error: null };
-                alert('数据库尚未添加 visible 字段，本次已按“公开展示”发布。请执行 supabase/schema.sql 启用海底漂流。');
-            } else {
-                result = retry;
-            }
-        }
-    }
+    const { error } = await db.from('bottles').insert([payload]);
 
-    if (result.error) {
+    if (error) {
         alert('网络波动，投递失败，请重试');
-        console.error(result.error);
+        console.error(error);
     } else {
         document.getElementById('postNickname').value = '';
         document.getElementById('postContent').value = '';

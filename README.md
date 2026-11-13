@@ -3,7 +3,7 @@
 福州大学 2026 年研究生科学道德与学风建设月 · 计算机与大数据学院
 
 一个匿名漂流瓶互动网页：写下科研路上的困惑、学术红线探讨、导学故事或暖心寄语，
-扔进海里；也可以选择把瓶子沉入海底，等待有缘人捞起。
+扔进海里；也可以选择不公开展示，让瓶子漂在海面上等待有缘人捞起。
 
 纯静态前端，数据存储使用 Supabase。
 
@@ -16,7 +16,11 @@
 - **海上捞瓶**：海面画里漂浮着许多未公开的瓶子；点首屏「捞一个漂流瓶」会先弹出海面，
   再点任意一只瓶子把它捞起来阅读，并可进一步参与讨论。
 - **四种漂流瓶类型**：学术红线探讨、科研困惑求助、导学关系树洞、暖光寄语。
-- **违禁词过滤**：漂流瓶与讨论在提交前都会做归一化匹配，命中违禁词即拦截发布。
+- **点赞**：漂流瓶卡片与每条讨论都可以点赞，同一设备只能点一次；
+  有 `bottle_likes` 表时为全站共享计数，没有则自动退化为本地点赞。
+- **违禁词过滤**：漂流瓶与讨论在提交前都会做归一化匹配，命中违禁词即拦截发布；
+  词库单独放在 `assets/js/banned-words.js`，改词无需动主逻辑。
+- **纯文字发布**：不提供图片、视频上传，内容里出现网址、图片/视频链接或 HTML 标签会被拦截。
 - **明亮海洋视觉**：水彩海景背景 + 白色玻璃拟态卡片、Canvas 动态波形、SVG 图标系统、
   响应式布局与 `prefers-reduced-motion` 降级。
 
@@ -24,13 +28,14 @@
 
 ```
 .
-├── index.html              # 页面结构（含 SVG 图标 sprite）
+├── index.html                  # 页面结构（含 SVG 图标 sprite）
 ├── assets/
-│   ├── css/style.css       # 全站样式与动画
-│   ├── js/app.js           # 全部交互逻辑（Supabase、渲染、违禁词）
-│   └── img/ocean-bg.png    # 海洋背景图
-├── supabase/schema.sql     # 数据库建表与 RLS 策略
-├── subject.jpg             # 活动通知原图（仅留档，页面不引用）
+│   ├── css/style.css           # 全站样式与动画
+│   ├── js/app.js               # 全部交互逻辑（Supabase、渲染、点赞）
+│   ├── js/banned-words.js      # 违禁词词库（单独维护）
+│   └── img/ocean-bg.jpg        # 海洋背景图（已压缩，约 230KB）
+├── supabase/schema.sql         # 数据库建表与 RLS 策略
+├── subject.jpg                 # 活动通知原图（仅留档，页面不引用）
 ├── .gitignore
 └── README.md
 ```
@@ -68,9 +73,13 @@ const SUPABASE_KEY = '<your-anon-or-publishable-key>';
 | --- | --- | --- |
 | `bottles` | `id`, `nickname`, `content`, `type`, `visible`, `created_at` | `type` 取值 `red` / `blue` / `green` / `warm`；`visible=false` 表示漂在海面、不公开展示 |
 | `comments` | `id`, `bottle_id`, `nickname`, `content`, `created_at` | `bottle_id` 关联 `bottles.id` |
+| `bottle_likes` | `id`, `target_type`, `target_id`, `visitor_id`, `created_at` | `target_type` 为 `bottle` / `comment`；`target_id` 用 text，以兼容内置示例瓶；唯一约束保证同一设备只计一次 |
 
 `visible` 字段默认 `true`。如果数据库是早期版本，执行 schema.sql 中的
 `alter table ... add column if not exists visible ...` 语句即可补齐。
+
+`bottle_likes` 不存在时，点赞会自动改用浏览器 localStorage，页面不会报错，
+只是计数不跨设备共享。
 
 ### 安全说明
 
@@ -88,5 +97,5 @@ schema.sql 已开启 RLS：匿名用户只能 `insert` 与 `select`，不能 `up
 
 ## 素材来源
 
-- 海洋背景图来自 [Unsplash](https://unsplash.com/)，遵循 Unsplash License。
+- 海洋背景图 `assets/img/ocean-bg.jpg` 为本项目自备素材。
 - 图标为项目内联 SVG，无外部图标库依赖。
